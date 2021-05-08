@@ -19,5 +19,10 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GLFManager.App\GLFManager.App.csproj" />
+    <ProjectReference Include="..\GLFManager.Models\GLFManager.Models.csproj" />
+  </ItemGroup>
+
 
 </Project>
