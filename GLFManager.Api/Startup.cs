@@ -1,7 +1,11 @@
 using GLFManager.App;
+using GLFManager.Middleware;
+using GLFManager.Models.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +47,29 @@ namespace GLFManager.Api
                     b.MigrationsAssembly("GLFManager.App");
                 });
             });
+
+            // Add Identity Framework
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = Configuration.GetSection("Identity").GetValue<string>("Authority");
+
+                    options.ApiName = "glfapi";
+                    options.RequireHttpsMetadata = false;
+                });
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +84,9 @@ namespace GLFManager.Api
 
             app.UseRouting();
 
+            app.UseMiddleware<GlobalExceptionHandler>();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
