@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+  glfmanager.api:
+    image: glfmanagerapi
+    container_name: "glfmanager.api"
+    build:
+      context: .
+      dockerfile: GLFManager.Api/Dockerfile
+    ports:
+      - "33000:80"
+      - "33001:443"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=glfi.db;Database=devdb;User Id=devdbuser:password=devdbpassword
+      - Identity_Authority=http://glfmanager.auth
+    volumes:
+      #- .aws:/root/.aws
+      - .:/usr/src/app
+    depends_on:
+      - "glfmanager.db"
+
+  glfmanager.auth:
+    image: glfmanagerauth
+    container_name: "glfmanager.auth"
+    build:
+      context: .
+      dockerfile: GLFManager.Auth/Dockerfile
+    ports:
+      - "33005:80"
+      - "33006:443"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=glfi.db;Database=devdb;User Id=devdbuser:password=devdbpassword
+    volumes:
+      #- .aws:/root/.aws
+      - .:/usr/src/app
+    depends_on:
+      - "glfmanager.db"
+
+  glfmanager.db:
+    restart: on-failure
+    image: "mdillon/postgis:11"
+    container_name: "glfmanager.db"
+    environment:
+      - POSTGRES_USER=devdbuser
+      - POSTGRES_DB=devdb
+      - POSTGRES_PASSWORD=devdbpassword
+    volumes:
+      - glfmanager-db:/var/lib/postresql/data
+    ports:
+      - "33010:5432"
+
+
+volumes:
+  glfmanager-db:
