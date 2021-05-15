@@ -12,7 +12,7 @@ services:
       - "33001:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=glfi.db;Database=devdb;User Id=devdbuser:password=devdbpassword
+      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser:password=devdbpassword
       - Identity_Authority=http://glfmanager.auth
     volumes:
       #- .aws:/root/.aws
@@ -31,7 +31,7 @@ services:
       - "33006:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=glfi.db;Database=devdb;User Id=devdbuser:password=devdbpassword
+      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser:password=devdbpassword
     volumes:
       #- .aws:/root/.aws
       - .:/usr/src/app
@@ -44,7 +44,7 @@ services:
     container_name: "glfmanager.db"
     environment:
       - POSTGRES_USER=devdbuser
-      - POSTGRES_DB=devdb
+      - POSTGRES_DB=glfdb
       - POSTGRES_PASSWORD=devdbpassword
     volumes:
       - glfmanager-db:/var/lib/postresql/data

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using GLFManager.Models.Entities;
 using GLFManager.App;
 using Microsoft.EntityFrameworkCore;
+using GLFManager.App.Seeds;
 
 namespace GLFManager.Api
 {
@@ -30,7 +31,7 @@ namespace GLFManager.Api
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
                     context.Database.Migrate();
-                    //Task.Run(async () => await UserAndRoleSeeder.SeedUsersAndRoles(roleManager, userManager)).Wait();
+                    Task.Run(async () => await UserAndRoleSeeder.SeedUsersAndRoles(roleManager, userManager)).Wait();
                     //Task.Run(async () => await CategorySeeder.SeedCategories(category, context)).Wait();
                 }
                 catch (Exception ex)
