@@ -29,7 +29,7 @@ namespace GLFManager.Api
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
-
+                    Console.WriteLine("!!!!!!!!!!CONTEXT = " + context.Database.GetDbConnection());
                     context.Database.Migrate();
                     Task.Run(async () => await UserAndRoleSeeder.SeedUsersAndRoles(roleManager, userManager)).Wait();
                     //Task.Run(async () => await CategorySeeder.SeedCategories(category, context)).Wait();

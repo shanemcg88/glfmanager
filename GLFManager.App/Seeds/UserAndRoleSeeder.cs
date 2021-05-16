@@ -21,7 +21,7 @@ namespace GLFManager.App.Seeds
             if (adminFound == null)
             {
                 var user = new User { Email = "shanelgmcguire@gmail.com" };
-                IdentityResult result = await userManager.CreateAsync(user, "password");
+                IdentityResult result = await userManager.CreateAsync(user, "Password1");
 
                 if (result.Succeeded)
                     await userManager.AddToRoleAsync(user, "administrator");
