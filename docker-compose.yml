@@ -11,11 +11,9 @@ services:
       - "33000:80"
       - "33001:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser:password=devdbpassword
+      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser;Password=devdbpassword;
       - Identity_Authority=http://glfmanager.auth
     volumes:
-      #- .aws:/root/.aws
       - .:/usr/src/app
     depends_on:
       - "glfmanager.db"
@@ -30,10 +28,8 @@ services:
       - "33005:80"
       - "33006:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser:password=devdbpassword
+      - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser;Password=devdbpassword;
     volumes:
-      #- .aws:/root/.aws
       - .:/usr/src/app
     depends_on:
       - "glfmanager.db"

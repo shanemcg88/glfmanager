@@ -20,7 +20,7 @@ namespace GLFManager.App.Seeds
             var adminFound = await userManager.FindByNameAsync("shanelgmcguire@gmail.com");
             if (adminFound == null)
             {
-                var user = new User { Email = "shanelgmcguire@gmail.com" };
+                var user = new User { Email = "shanelgmcguire@gmail.com", UserName = "shane" };
                 IdentityResult result = await userManager.CreateAsync(user, "Password1");
 
                 if (result.Succeeded)
