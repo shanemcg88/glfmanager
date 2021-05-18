@@ -1,4 +1,5 @@
-﻿using GLFManager.Models.Entities;
+﻿using GLFManager.App.Repositories.Interfaces;
+using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +13,19 @@ namespace GLFManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class UserAccountController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
+        private readonly IUserAccountRepository _userRepository;
 
-        public AccountController(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager)
+        public UserAccountController(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager, IUserAccountRepository userRepository)
         {
             _signInManager = signInManager;
             _configuration = configuration;
             _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         [HttpPost("login")]
@@ -33,7 +36,7 @@ namespace GLFManager.Api.Controllers
             if (!signInResult.Succeeded)
                 return BadRequest("Invalid username/password");
 
-            
+            var retrieveUser = await _userRepository.GetUserByEmail(login.Email);
         }
 
     }
