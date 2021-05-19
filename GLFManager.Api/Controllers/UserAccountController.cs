@@ -1,6 +1,7 @@
 ﻿using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
+using GLFManager.Models.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,10 @@ namespace GLFManager.Api.Controllers
             if (!signInResult.Succeeded)
                 return BadRequest("Invalid username/password");
 
-            var retrieveUser = await _userRepository.GetUserByEmail(login.Email);
+            var retrievedUser = await _userRepository.GetUserByEmail(login.Email);
+            var tokenStatus = _userRepository.GetLoginTokenFromIdServer(login, new UserViewModel(retrievedUser));
+
+            return Ok(tokenStatus);
         }
 
     }

@@ -1,10 +1,13 @@
 ﻿using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Account;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +32,21 @@ namespace GLFManager.App.Repositories
         {
             var retrievedUser = await _context.Users.FirstAsync(user => user.Email == email);
             return retrievedUser;
+        }
+
+        public async Task<LoginResponseViewModel> GetAccessTokenForLogin(LoginViewModel loginInput)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var authority = _configuration.GetSection("Identity").GetValue<string>("Authority");
+
+                var tokenResponse = await httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest 
+                {
+                    Address = authority + "/connect/token",
+                    UserName = loginInput.Email,
+                    Password
+                })
+            }
         }
     }
 }
