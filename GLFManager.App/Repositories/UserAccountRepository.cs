@@ -1,6 +1,7 @@
 ﻿using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
+using GLFManager.Models.ViewModels.User;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,18 +35,24 @@ namespace GLFManager.App.Repositories
             return retrievedUser;
         }
 
-        public async Task<LoginResponseViewModel> GetAccessTokenForLogin(LoginViewModel loginInput)
+        public async Task<LoginResponseViewModel> GetLoginTokenFromIdServer(LoginViewModel loginInput, UserViewModel user)
         {
             using (var httpClient = new HttpClient())
             {
                 var authority = _configuration.GetSection("Identity").GetValue<string>("Authority");
 
-                var tokenResponse = await httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest 
-                {
+                var tokenResponse = await httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest {
                     Address = authority + "/connect/token",
                     UserName = loginInput.Email,
-                    Password
-                })
+                    Password = loginInput.Password,
+                    ClientId = loginInput.ClientId,
+                    ClientSecret = "UzKjRFnAHffxUFati8HMjSEzwMGgGHmN",
+                    Scope = "glfmanager.scope roles"
+                }).ConfigureAwait(false);
+
+                return new LoginResponseViewModel(tokenResponse, user);
+
+                
             }
         }
     }

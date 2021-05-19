@@ -1,4 +1,6 @@
 using GLFManager.App;
+using GLFManager.App.Repositories;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Middleware;
 using GLFManager.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -69,6 +71,8 @@ namespace GLFManager.Api
                     options.RequireHttpsMetadata = false;
                 });
             services.AddControllers();
+
+            services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 
         }
 
