@@ -40,18 +40,19 @@ namespace GLFManager.App.Repositories
             using (var httpClient = new HttpClient())
             {
                 var authority = _configuration.GetSection("Identity").GetValue<string>("Authority");
-
                 var tokenResponse = await httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest {
                     Address = authority + "/connect/token",
                     UserName = loginInput.Email,
                     Password = loginInput.Password,
                     ClientId = loginInput.ClientId,
                     ClientSecret = "UzKjRFnAHffxUFati8HMjSEzwMGgGHmN",
-                    Scope = "glfmanager.scope roles"
+                    Scope = "glfapi.scope roles"
                 }).ConfigureAwait(false);
 
-                return new LoginResponseViewModel(tokenResponse, user);
+                if (tokenResponse.IsError)
+                    return new LoginResponseViewModel(tokenResponse, user, tokenResponse.Error);
 
+                return new LoginResponseViewModel(tokenResponse, user);
                 
             }
         }

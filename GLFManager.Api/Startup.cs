@@ -70,7 +70,9 @@ namespace GLFManager.Api
                     options.ApiName = "glfapi";
                     options.RequireHttpsMetadata = false;
                 });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 

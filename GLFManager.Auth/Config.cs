@@ -37,7 +37,7 @@ namespace GLFManager.Auth
             {
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "mobile",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     ClientSecrets =

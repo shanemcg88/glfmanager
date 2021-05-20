@@ -32,13 +32,15 @@ namespace GLFManager.Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseViewModel>> Login([FromBody] LoginViewModel login)
         {
-            var signInResult = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, false).ConfigureAwait(false);
+            var signInResult = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, true).ConfigureAwait(false);
 
             if (!signInResult.Succeeded)
                 return BadRequest("Invalid username/password");
 
             var retrievedUser = await _userRepository.GetUserByEmail(login.Email);
-            var tokenStatus = _userRepository.GetLoginTokenFromIdServer(login, new UserViewModel(retrievedUser));
+            var tokenStatus = await _userRepository.GetLoginTokenFromIdServer(login, new UserViewModel(retrievedUser));
+            if (tokenStatus.Message != null)
+                return BadRequest(tokenStatus);
 
             return Ok(tokenStatus);
         }
