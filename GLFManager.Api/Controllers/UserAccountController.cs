@@ -19,9 +19,9 @@ namespace GLFManager.Api.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        private readonly IUserAccountRepository _userRepository;
+        private readonly App.Repositories.Interfaces.IUserAccountRepository _userRepository;
 
-        public UserAccountController(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager, IUserAccountRepository userRepository)
+        public UserAccountController(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager, App.Repositories.Interfaces.IUserAccountRepository userRepository)
         {
             _signInManager = signInManager;
             _configuration = configuration;
