@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 using GLFManager.Models.ViewModels.Account;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GLFManager.Tests
 {
@@ -24,21 +28,38 @@ namespace GLFManager.Tests
                 userStoreMock.Object, null, null, null, null, null, null, null, null);
         }
 
-        private Mock<SignInManager<User>> GetMockSignInManager()
-        {
-            var signInMock = new Mock<IUserStore<User>>();
-            return new Mock<SignInManager<User>>(signInMock.Object, null, null);
 
+
+        //private Mock<SignInManager<User>> GetMockSignInManager()
+        //{
+        //    var signInMock = new Mock<IUserStore<User>>();
+        //    return new Mock<SignInManager<User>>(signInMock.Object, null, null);
+
+        //}
+
+        private Mock<SignInManager<User>> GetMockSignInManager(Mock userManager)
+        {
+            //var mockUserManager = GetMockUserManager();
+            var mockContextAccessor = new Mock<IHttpContextAccessor>().Object;
+            var mockClaimsPrincipal = new Mock<IUserClaimsPrincipalFactory<User>>().Object;
+            var mockOptions = new Mock<IOptions<IdentityOptions>>().Object;
+            var mockLogger = new Mock<ILogger<SignInManager<User>>>().Object;
+            var mockAuthScheme = new Mock<IAuthenticationSchemeProvider>().Object;
+            var mockUserConfirmation = new Mock<IUserConfirmation<User>>().Object;
+            return new Mock<SignInManager<User>>(userManager.Object, mockContextAccessor, mockClaimsPrincipal, mockOptions, mockLogger, mockAuthScheme, mockUserConfirmation);
         }
         [Fact]
         public async Task GetUserByEmailInLoginProcess()
         {
             // Arrange
-            var loginCredentials = new LoginViewModel() { Email = "test1@email.com", Password = "Password1", ClientId = "mobile" };
+            var loginCredentials = new LoginViewModel() { Email = "shanelgmcguire@gmail.com", Password = "Password1", ClientId = "client" };
             var mockUserAccountRepo = new Mock<IUserAccountRepository>();
-            var mockSignInManager = GetMockSignInManager();
+
+            var contextAccessor = new Mock<IHttpContextAccessor>();
+            var userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
             var mockConfiguration = new Mock<IConfiguration>();
             var mockUserManager = GetMockUserManager();
+            var mockSignInManager = GetMockSignInManager(mockUserManager);
 
             mockUserAccountRepo.Setup(repo => repo.GetUserByEmail(loginCredentials.Email))
                 .ReturnsAsync(new User { Email = loginCredentials.Email, UserName = loginCredentials.Email });

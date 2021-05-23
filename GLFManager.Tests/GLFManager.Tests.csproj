@@ -15,10 +15,4 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GLFManager\GLFManager.Api\GLFManager.Api.csproj" />
-    <ProjectReference Include="..\GLFManager\GLFManager.App\GLFManager.App.csproj" />
-    <ProjectReference Include="..\GLFManager\GLFManager.Auth\GLFManager.Auth.csproj" />
-  </ItemGroup>
-
 </Project>
