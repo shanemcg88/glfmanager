@@ -14,7 +14,6 @@ namespace GLFManager.Models.Entities
         public User(UserCreateVM src) : base()
         {
             Email = src.Email;
-            UserName = src.UserName;
         }
     }
 }

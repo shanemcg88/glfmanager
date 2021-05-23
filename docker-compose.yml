@@ -11,6 +11,7 @@ services:
       - "33000:80"
       - "33001:443"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser;Password=devdbpassword;
       - Identity__Authority=http://glfmanager.auth
     volumes:
@@ -28,6 +29,7 @@ services:
       - "33005:80"
       - "33006:443"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=glfmanager.db;Database=glfdb;User Id=devdbuser;Password=devdbpassword;
     volumes:
       - .:/usr/src/app
