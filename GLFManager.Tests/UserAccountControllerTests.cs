@@ -35,7 +35,7 @@ namespace GLFManager.Tests
             }.AsQueryable();
 
             var mockUserManager = new Mock<FakeUserManager>();
-            var mockDbContext = new Mock<ApplicationDbContext>();
+            //var mockDbContext = new Mock<ApplicationDbContext>();
             var mockIConfiguration = new Mock<IConfiguration>();
             var mockRoleManager = new Mock<RoleManager<IdentityRole>>();
             var mockSignInManager = new Mock<FakeSignInManager>();
@@ -44,7 +44,7 @@ namespace GLFManager.Tests
             mockUserManager.Setup(x => x.Users)
                 .Returns(users);
 
-            Repository = new UserAccountRepository(mockDbContext.Object, mockUserManager.Object, mockIConfiguration.Object, mockRoleManager.Object);
+            //Repository = new UserAccountRepository(mockDbContext.Object, mockUserManager.Object, mockIConfiguration.Object, mockRoleManager.Object);
 
             var userValidator = new Mock<IUserValidator<User>>();
             userValidator.Setup(x => x.ValidateAsync(It.IsAny<UserManager<User>>(), It.IsAny<User>()))
