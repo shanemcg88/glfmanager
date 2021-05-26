@@ -25,6 +25,19 @@ namespace GLFManager.Tests
 {
     public class UserAccountRepositoryTests
     {
+        private readonly ApplicationDbContext _context;
+
+        public UserAccountRepositoryTests()
+        {
+            var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseNpgsql("Host=localhost;Port=33030;Database=glfTest;User Id=devdbuser;Password=devdbpassword");
+            _context = new ApplicationDbContext(dbContextOptions.Options);
+            _context.Database.EnsureCreated();
+        }
+
+        public void TearDown()
+        {
+            _context.Database.EnsureDeleted();
+        }
 
         Mock<UserManager<TIDentityUser>> GetUserManagerMock<TIDentityUser>() where TIDentityUser : IdentityUser
         {
@@ -54,7 +67,6 @@ namespace GLFManager.Tests
         public async Task GetUserByEmailInLoginProcess()
         {
             // Arrange
-            var dbContextMock = new Mock<IDbContext>();
             var getEmail = "test1@email.com";
             var mockRepository = new Mock<IUserAccountRepository>();
             mockRepository.Setup(repo => repo.GetUserByEmail(getEmail))
@@ -64,13 +76,15 @@ namespace GLFManager.Tests
             var mockRoleManager = GetRoleManagerMock<IdentityRole>();
             var mockConfiguration = new Mock<IConfiguration>();
 
-            var repository = new UserAccountRepository(dbContextMock.Object, mockUserManager.Object, mockConfiguration.Object, mockRoleManager.Object);
+            var repository = new UserAccountRepository(_context, mockUserManager.Object, mockConfiguration.Object, mockRoleManager.Object);
 
             // Act
             var result = await repository.GetUserByEmail("shanelgmcguire@gmail.com");
             Console.WriteLine("!!!!!!!!!RESULT " + result);
             // Assert
             Assert.NotNull(result);
+
+            TearDown();
         }
 
         public List<User> FakeUserData()
