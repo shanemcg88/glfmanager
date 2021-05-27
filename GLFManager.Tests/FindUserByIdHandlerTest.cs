@@ -12,7 +12,7 @@ namespace GLFManager.Tests
 
         public FindUserByIdHandlerTest(DatabaseFixture databaseFixture) : base(databaseFixture)
         {
-            //_handler = new FindUserByIdHandlerTest(DbContext);
+           // _handler = new FindUserByIdHandlerTest(DbContext);
         }
     }
 }

@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
@@ -21,6 +22,7 @@
     <ProjectReference Include="..\GLFManager.Api\GLFManager.Api.csproj" />
     <ProjectReference Include="..\GLFManager.App\GLFManager.App.csproj" />
     <ProjectReference Include="..\GLFManager.Auth\GLFManager.Auth.csproj" />
+    <ProjectReference Include="..\GLFManager.Models\GLFManager.Models.csproj" />
   </ItemGroup>
 
 </Project>
