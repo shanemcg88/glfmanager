@@ -1,4 +1,5 @@
-﻿using GLFManager.Models.ViewModels.Account;
+﻿using GLFManager.Api;
+using GLFManager.Models.ViewModels.Account;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ using Xunit;
 
 namespace GLFManager.Tests.IntegrationTests
 {
-    public class UserAccountControllerTests : IntegrationTest
+    public class UserAccountControllerTests : IntegrationTest<Startup>
     {
         [Fact]
         public async Task Return_BadRequest_If_EmailOrPassword_Is_Incorrect()
@@ -16,7 +17,7 @@ namespace GLFManager.Tests.IntegrationTests
 
             var loginCredentials = new LoginViewModel() { Email = "test@email.com", Password = "test", ClientId = "client" };
 
-            await LoginTest(loginCredentials);
+            //await LoginTest(loginCredentials);
             // Act
 
             // Assert
