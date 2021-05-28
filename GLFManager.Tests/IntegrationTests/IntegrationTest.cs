@@ -77,8 +77,13 @@ namespace GLFManager.Tests.IntegrationTests
 
                     try
                     {
+                        
+                        var user = new User { Email = "shanelgmcguire@gmail.com" };
                         var mockRoleManager = GetRoleManagerMock<IdentityRole>();
                         var mockUserManager = GetUserManagerMock<User>();
+                        mockUserManager.Setup(s => s.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                            .ReturnsAsync(IdentityResult.Success);
+
                         await UserAndRoleSeeder.SeedUsersAndRoles(mockRoleManager.Object, mockUserManager.Object);
                     }
                     catch (Exception ex)

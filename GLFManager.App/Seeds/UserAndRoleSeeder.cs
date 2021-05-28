@@ -25,6 +25,8 @@ namespace GLFManager.App.Seeds
 
                 if (result.Succeeded)
                     await userManager.AddToRoleAsync(user, "administrator");
+                else
+                    throw new Exception("An error occured when creating a seeded user");
             }
 
 
