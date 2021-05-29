@@ -1,6 +1,8 @@
 ﻿using GLFManager.Api;
 using GLFManager.Api.Controllers;
 using GLFManager.App;
+using GLFManager.App.Repositories;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.App.Seeds;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -50,10 +53,35 @@ namespace GLFManager.Tests.IntegrationTests
                     new Mock<ILogger<RoleManager<TIdentityRole>>>().Object);
         }
 
+        private IConfiguration _config;
+
+        private ApplicationDbContext _context;
+
+        public void UnitTestManager()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<IConfiguration>(Configuration);
+        }
+
+        public IConfiguration Configuration {
+            get {
+                if (_config == null)
+                {
+                    var builder = new ConfigurationBuilder().AddJsonFile($"F:/webdev/glfManager/GLFManager/GLFManager.Api/testsettings.json", optional: false);
+                    _config = builder.Build();
+                }
+
+                return _config;
+            }
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+
             builder.ConfigureServices(async services =>
             {
+
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
@@ -77,6 +105,7 @@ namespace GLFManager.Tests.IntegrationTests
 
                     try
                     {
+
                         
                         var user = new User { Email = "shanelgmcguire@gmail.com" };
                         var mockRoleManager = GetRoleManagerMock<IdentityRole>();
@@ -92,6 +121,21 @@ namespace GLFManager.Tests.IntegrationTests
                     }
                 }
             });
+        }
+
+        public UserAccountRepository InitializeRepository()
+        {
+            UnitTestManager();
+            var mockRepository = new Mock<IUserAccountRepository>();
+            var mockDbContext = new Mock<ApplicationDbContext>();
+            var mockUserManager = GetUserManagerMock<User>();
+            var mockRoleManager = GetRoleManagerMock<IdentityRole>();
+            var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseNpgsql("Host=localhost;Port=33030;Database=glfTest;User Id=devdbuser;Password=devdbpassword");
+            _context = new ApplicationDbContext(dbContextOptions.Options);
+            _context.Database.EnsureCreated();
+            var repository = new UserAccountRepository(mockDbContext.Object, mockUserManager.Object, _config, mockRoleManager.Object);
+
+            return repository;
         }
 
         protected async Task AuthenticateAsync()
