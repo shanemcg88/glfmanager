@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GLFManager.Models.Entities
 {
-    class BaseEntity<TId>
+    public class BaseEntity<TId>
     {
         public BaseEntity()
         {

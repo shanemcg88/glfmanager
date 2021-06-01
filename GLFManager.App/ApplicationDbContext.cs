@@ -11,7 +11,7 @@ namespace GLFManager.App
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
+        public DbSet<Company> Companies { get; set; }
     }
 }
