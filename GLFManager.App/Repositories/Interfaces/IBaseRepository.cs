@@ -10,6 +10,6 @@ namespace GLFManager.App.Repositories.Interfaces
         Task<TEntity> Create(TEntity src);
         Task<TEntity> Get(TPrimaryKey id);
         Task<List<TEntity>> GetAll();
-        Task Delete(Guid id);
+        Task Delete(string id);
     }
 }
