@@ -11,16 +11,14 @@ namespace GLFManager.App.Seeds
     {
         public static async Task SeedUsersAndRoles(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
-            // Create the roles
             var adminRoleExists = await roleManager.RoleExistsAsync("administrator");
             if (!adminRoleExists)
                 await roleManager.CreateAsync(new IdentityRole("administrator"));
 
-            // Create user
             var adminFound = await userManager.FindByNameAsync("shanelgmcguire@gmail.com");
             if (adminFound == null)
             {
-                var user = new User { Email = "shanelgmcguire@gmail.com" };
+                var user = new User { Email = "shanelgmcguire@gmail.com", UserName = "shanelgmcguire@gmail.com" };
                 IdentityResult result = await userManager.CreateAsync(user, "Password1");
 
                 if (result.Succeeded)

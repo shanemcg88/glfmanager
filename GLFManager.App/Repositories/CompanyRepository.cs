@@ -1,10 +1,22 @@
-﻿using System;
+﻿using GLFManager.App.Repositories.Interfaces;
+using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Companies;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GLFManager.App.Repositories
 {
-    class CompanyRepository
+    public class CompanyRepository : BaseRepository<Company, Guid, ApplicationDbContext>, ICompanyRepository
     {
+        public CompanyRepository(ApplicationDbContext dbContext)
+            : base(dbContext)
+        { }
+
+        public Task<CompanyViewModel> AddCompany(AddCompanyViewModel newCompany)
+        {
+            return null;
+        }
     }
 }
