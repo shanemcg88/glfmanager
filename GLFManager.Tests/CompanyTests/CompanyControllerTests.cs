@@ -25,23 +25,18 @@ namespace GLFManager.Tests.CompanyTests
         public async Task AddNewCompany()
         {
             // Arrange
-            var sampleCompany = new Company() { Name = "companyTest", Address = "companyAddress" };
-            var addSampleCompany = new AddCompanyViewModel() { Name = "companyTest", Address = "companyAddress" };
+            var sampleCompany = new Company() {  Name = "companyTest", Address = "companyAddress" };
+
             var mockCompanyRepository = new Mock<ICompanyRepository>();
             mockCompanyRepository.Setup(repo => repo.Create(sampleCompany))
                 .ReturnsAsync(new Company { Name = "companyTest", Address = "companyAddress" });
 
-            var companyController = new CompanyController(mockCompanyRepository.Object);
-            var expected = typeof(CompanyViewModel);
-
             // Act
-            var result = await companyController.AddCompany(addSampleCompany);
+            var result = await mockCompanyRepository.Object.Create(sampleCompany);
 
             // Assert
-            
-            Assert.Null(result.Value);
-            //Assert.IsType<CompanyViewModel>(result.Value);
-
+            Assert.NotNull(result);
+            Assert.IsType<Company>(result);
         }
     }
 }

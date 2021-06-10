@@ -22,6 +22,29 @@ namespace GLFManager.Api.Controllers
             _companyRepository = companyRepository;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<CompanyViewModel>>> GetAllCompanies()
+        {
+            var companies = await _companyRepository.GetAll();
+
+            if (companies.Count == 0)
+                return NotFound("No companies found");
+
+            return Ok(companies);
+        }
+
+        [HttpGet("{companyId}")]
+        public async Task<ActionResult<CompanyViewModel>> GetCompany([FromRoute] Guid companyId)
+        {
+            var foundCompany = await _companyRepository.Get(companyId);
+
+            if (foundCompany == null)
+                return NotFound("No Companies Found");
+
+            return Ok(foundCompany);
+        }
+
+
         [HttpPost("addcompany")]
         public async Task<ActionResult<CompanyViewModel>> AddCompany([FromBody] AddCompanyViewModel companyInput)
         {
@@ -32,5 +55,7 @@ namespace GLFManager.Api.Controllers
 
             return Ok(new CompanyViewModel(result));
         }
+
+
     }
 }
