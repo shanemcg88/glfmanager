@@ -9,6 +9,7 @@ namespace GLFManager.Models.ViewModels.Companies
     {
         public CompanyViewModel(Company src)
         {
+            Id = src.Id;
             Name = src.Name;
             Address = src.Address;
             OfficePhone = src.OfficePhone;
@@ -21,6 +22,7 @@ namespace GLFManager.Models.ViewModels.Companies
             ContactEmail = src.ContactEmail;
         }
 
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string OfficePhone { get; set; }

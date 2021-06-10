@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using GLFManager.App;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
@@ -40,6 +41,8 @@ namespace GLFManager.Api
                 loggingBuilder.AddDebug();
             });
 
+            
+
             // Set up database
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -72,7 +75,11 @@ namespace GLFManager.Api
                 });
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            ).AddFluentValidation(s =>
+            {
+                s.RegisterValidatorsFromAssemblyContaining<Startup>();
+                //s.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+            });
 
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();

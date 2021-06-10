@@ -16,6 +16,11 @@ namespace GLFManager.Tests.CompanyTests
 {
     public class CompanyControllerTests
     {
+        public CompanyControllerTests()
+        {
+
+        }
+
         [Fact]
         public async Task AddNewCompany()
         {
@@ -35,7 +40,6 @@ namespace GLFManager.Tests.CompanyTests
             // Assert
             
             Assert.Null(result.Value);
-            result.Should().BeOfType<ActionResult>(result);
             //Assert.IsType<CompanyViewModel>(result.Value);
 
         }

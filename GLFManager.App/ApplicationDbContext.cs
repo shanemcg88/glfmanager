@@ -13,5 +13,13 @@ namespace GLFManager.App
         {
         }
         public DbSet<Company> Companies { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Company>()
+                .HasIndex(company => new { company.Name })
+                .IsUnique(true);
+        }
     }
 }
