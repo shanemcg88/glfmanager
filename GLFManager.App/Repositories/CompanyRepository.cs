@@ -13,10 +13,5 @@ namespace GLFManager.App.Repositories
         public CompanyRepository(ApplicationDbContext dbContext)
             : base(dbContext)
         { }
-
-        public Task<CompanyViewModel> AddCompany(AddCompanyViewModel newCompany)
-        {
-            return null;
-        }
     }
 }

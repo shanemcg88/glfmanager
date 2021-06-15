@@ -14,9 +14,9 @@ using FluentAssertions;
 
 namespace GLFManager.Tests.CompanyTests
 {
-    public class CompanyControllerTests
+    public class CompanyRepositoryTests
     {
-        public CompanyControllerTests()
+        public CompanyRepositoryTests()
         {
 
         }
