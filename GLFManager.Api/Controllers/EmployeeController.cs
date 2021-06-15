@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GLFManager.App.Repositories.Interfaces;
+using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Employees;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +10,25 @@ using System.Threading.Tasks;
 
 namespace GLFManager.Api.Controllers
 {
-    public class EmployeeController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
+    public class EmployeeController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public EmployeeController(IEmployeeRepository employeeRepository)
         {
-            return View();
+            _employeeRepository = employeeRepository;
+        }
+
+        [HttpPost("addemployee")]
+        public async Task<ActionResult<EmployeeViewModel>> AddNewEmployee([FromBody] AddEmployeeViewModel employeeInput)
+        {
+            var newEmployee = new Employee(employeeInput);
+            var addEmployeeResult = await _employeeRepository.Create(newEmployee);
+
+            return Ok(new EmployeeViewModel(addEmployeeResult));
         }
     }
 }

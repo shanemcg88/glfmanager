@@ -83,6 +83,7 @@ namespace GLFManager.Api
 
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
         }
 
