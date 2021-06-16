@@ -1,4 +1,5 @@
-﻿using GLFManager.App.Repositories.Interfaces;
+﻿using GLFManager.App.Exceptions;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
 using Moq;
 using System;
@@ -33,6 +34,26 @@ namespace GLFManager.Tests.EmployeeTests
             Assert.NotNull(resultFromAddEmployee);
             Assert.IsType<Employee>(resultFromAddEmployee);
             Assert.Equal("firstnametest1", resultFromAddEmployee.FirstName);
+        }
+
+        [Fact]
+        public async Task GetEmployeeById()
+        {
+            // Arrange
+            Guid employeeId = new Guid("2fd946d6-2753-40bb-b372-86fb19e16934");
+            var testEmployee = new Employee { Id = employeeId, FirstName = "TestGet", LastName = "TestGet" };
+
+            var mockEmployeeRepository = new Mock<IEmployeeRepository>();
+            mockEmployeeRepository.Setup(repo => repo.Get(employeeId))
+                .ReturnsAsync(testEmployee);
+
+            // Act
+            var resultFromGetEmployee = await mockEmployeeRepository.Object.Get(employeeId);
+
+            // Assert
+            Assert.NotNull(resultFromGetEmployee);
+            Assert.IsType<Employee>(resultFromGetEmployee);
+            Assert.Equal(employeeId, resultFromGetEmployee.Id);
         }
     }
 }

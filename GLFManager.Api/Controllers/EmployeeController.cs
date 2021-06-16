@@ -1,4 +1,5 @@
-﻿using GLFManager.App.Repositories.Interfaces;
+﻿using GLFManager.App.Exceptions;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Employees;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,13 @@ namespace GLFManager.Api.Controllers
         public EmployeeController(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
+        }
+
+        [HttpGet("{employeeId}")]
+        public async Task<ActionResult<EmployeeViewModel>> GetEmployeeById([FromRoute] Guid employeeId)
+        {
+            var getEmployee = await _employeeRepository.Get(employeeId);
+            return Ok(new EmployeeViewModel(getEmployee));
         }
 
         [HttpPost("addemployee")]
