@@ -1,6 +1,7 @@
 ﻿using GLFManager.App.Exceptions;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Employees;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,32 @@ namespace GLFManager.Tests.EmployeeTests
             Assert.NotNull(resultFromGetEmployee);
             Assert.IsType<Employee>(resultFromGetEmployee);
             Assert.Equal(employeeId, resultFromGetEmployee.Id);
+        }
+
+        [Fact]
+        public async Task GetAllEmployees()
+        {
+            // Arrange
+            var mockEmployeeRepository = new Mock<IEmployeeRepository>();
+            mockEmployeeRepository.Setup(repo => repo.GetAll())
+                .ReturnsAsync(Get2Employees());
+
+            // Act
+            var resultFromGetAllEmployees = await mockEmployeeRepository.Object.GetAll();
+
+            // Assert
+            Assert.NotNull(resultFromGetAllEmployees);
+            Assert.Equal(2, resultFromGetAllEmployees.Count);
+        }
+
+        // data 
+        private List<Employee> Get2Employees()
+        {
+            var listOfEmployees = new List<Employee>();
+            listOfEmployees.Add(new Employee { FirstName = "employee1" });
+            listOfEmployees.Add(new Employee { FirstName = "employee2" });
+           
+            return listOfEmployees;
         }
     }
 }

@@ -38,12 +38,12 @@ namespace GLFManager.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CompanyViewModel>>> GetAllCompanies()
         {
-            var allListings = await _companyRepository.GetAll();
+            var allCompanies = await _companyRepository.GetAll();
 
-            if (allListings.Count == 0)
+            if (allCompanies.Count == 0)
                 return NotFound("No companies found");
 
-            var toViewModels = allListings.Select(company => new CompanyViewModel(company)).ToList();
+            var toViewModels = allCompanies.Select(company => new CompanyViewModel(company)).ToList();
 
             return Ok(toViewModels);
         }

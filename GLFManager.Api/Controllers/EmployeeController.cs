@@ -23,12 +23,26 @@ namespace GLFManager.Api.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<EmployeeViewModel>>> GetAllEmployees()
+        {
+            var allEmployees = await _employeeRepository.GetAll();
+
+            if (allEmployees.Count == 0)
+                return NotFound("No employees found");
+
+            var toViewModels = allEmployees.Select(employee => new EmployeeViewModel(employee)).ToList();
+            return Ok(toViewModels);
+
+        }
+
         [HttpGet("{employeeId}")]
         public async Task<ActionResult<EmployeeViewModel>> GetEmployeeById([FromRoute] Guid employeeId)
         {
             var getEmployee = await _employeeRepository.Get(employeeId);
             return Ok(new EmployeeViewModel(getEmployee));
         }
+
 
         [HttpPost("addemployee")]
         public async Task<ActionResult<EmployeeViewModel>> AddNewEmployee([FromBody] AddEmployeeViewModel employeeInput)
