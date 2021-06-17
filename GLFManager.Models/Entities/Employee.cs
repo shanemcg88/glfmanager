@@ -31,5 +31,7 @@ namespace GLFManager.Models.Entities
         public string Country { get; set; }
         public string PostalCode { get; set; }
         public List<string> Skills { get; set; }
+
+        public ICollection<JobsEmployee> JobsEmployees { get; set; }
     }
 }

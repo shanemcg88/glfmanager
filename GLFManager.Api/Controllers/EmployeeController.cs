@@ -32,8 +32,8 @@ namespace GLFManager.Api.Controllers
                 return NotFound("No employees found");
 
             var toViewModels = allEmployees.Select(employee => new EmployeeViewModel(employee)).ToList();
-            return Ok(toViewModels);
 
+            return Ok(toViewModels);
         }
 
         [HttpGet("{employeeId}")]

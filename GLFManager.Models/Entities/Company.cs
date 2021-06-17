@@ -38,5 +38,7 @@ namespace GLFManager.Models.Entities
         public string Contact { get; set; }
         public string ContactPhone { get; set; }
         public string ContactEmail { get; set; }
+
+        public List<Jobs> Jobs { get; set; }
     }
 }
