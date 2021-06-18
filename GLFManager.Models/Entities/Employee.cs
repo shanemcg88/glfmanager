@@ -19,6 +19,7 @@ namespace GLFManager.Models.Entities
             Country = src.Country;
             PostalCode = src.Country;
             Skills = src.Skills;
+            JobsEmployees = new List<JobsEmployee>();
         }
 
         public string FirstName { get; set; }
