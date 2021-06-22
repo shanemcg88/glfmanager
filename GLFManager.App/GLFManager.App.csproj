@@ -7,6 +7,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210523082056_removeUserNamePropertyInUserEnt.cs" />
     <Compile Remove="Migrations\20210523082056_removeUserNamePropertyInUserEnt.Designer.cs" />
+    <Compile Remove="Migrations\20210622053241_moreModsToJobsEntity.cs" />
+    <Compile Remove="Migrations\20210622053241_moreModsToJobsEntity.Designer.cs" />
+    <Compile Remove="Migrations\20210622054109_moreModsToJobsEntity.cs" />
+    <Compile Remove="Migrations\20210622054109_moreModsToJobsEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GLFManager.Models\GLFManager.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

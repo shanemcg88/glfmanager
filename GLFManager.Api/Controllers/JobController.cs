@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GLFManager.App.Repositories;
+using GLFManager.Models.ViewModels.Jobs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,19 @@ namespace GLFManager.Api.Controllers
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
     public class JobController : ControllerBase
     {
+        private readonly JobsRepository _jobsRepository;
         
+        public JobController(JobsRepository jobsReposistory)
+        {
+            _jobsRepository = jobsReposistory;
+        }
+
+        [HttpPost("createjob")]
+        public async Task<ActionResult<JobsViewModel>> CreateJob(CreateJobViewModel createJob)
+        {
+            var result = await _jobsRepository.CreateJobSetup(createJob);
+            return Ok(result);
+        }
+
     }
 }
