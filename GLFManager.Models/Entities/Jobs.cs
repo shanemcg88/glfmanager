@@ -17,6 +17,7 @@ namespace GLFManager.Models.Entities
             NumberOfPositions = src.NumberOfPositions;
             Positions = src.Positions;
             CompanyId = src.CompanyId;
+            EmployeeIds = src.Employees;
             //JobsEmployees = src.JobsEmployees;
         }
         public string Address { get; set; }
@@ -24,6 +25,7 @@ namespace GLFManager.Models.Entities
         public string PhoneNumber { get; set; }
         public int NumberOfPositions { get; set; }
         public List<string> Positions { get; set; }
+        public List<Guid> EmployeeIds { get; set; }
 
         public Guid CompanyId { get; set; }
         public Company Company { get; set; }
