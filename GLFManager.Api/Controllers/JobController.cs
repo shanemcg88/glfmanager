@@ -1,4 +1,5 @@
 ﻿using GLFManager.App.Repositories;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.ViewModels.Jobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,9 @@ namespace GLFManager.Api.Controllers
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
     public class JobController : ControllerBase
     {
-        private readonly JobsRepository _jobsRepository;
+        private readonly IJobsRepository _jobsRepository;
         
-        public JobController(JobsRepository jobsReposistory)
+        public JobController(IJobsRepository jobsReposistory)
         {
             _jobsRepository = jobsReposistory;
         }
