@@ -12,6 +12,8 @@ namespace GLFManager.Tests.JobTests
 {
     public class JobRepositoryTests
     {
+        
+
         [Fact]
         public async Task AddNewJob()
         {
@@ -44,6 +46,35 @@ namespace GLFManager.Tests.JobTests
             Assert.IsType<JobsViewModel>(resultFromJobCreate);
             Assert.Equal(companyId, resultFromJobCreate.CompanyId);
             Assert.Equal(2, resultFromJobCreate.JobsEmployees.Count);
+        }
+
+        [Fact]
+        public async Task GetJob()
+        {
+            // Arrange
+            Guid jobId = new Guid("52464bcd-2fc9-41ad-8e55-5559516468fe");
+            Guid companyId = new Guid("1b65b78f-4556-4274-9927-bbe63d30f503");
+            Guid employee1Id = new Guid("cce4af32-b63a-4dac-971d-1934ff6115bb");
+            Guid employee2Id = new Guid("c112ad1a-d440-45fd-84ba-4e4cda41c4c0");
+            string address = "123 street";
+            string contact = "jane";
+            string phoneNumber = "999-5555";
+            int numberOfPositions = 2;
+            List<string> positions = new List<string>() { "general labour", "skilled labour" };
+
+            var job = new Jobs { Id = jobId, Address = address, Contact = contact, PhoneNumber = phoneNumber, NumberOfPositions = numberOfPositions, CompanyId = companyId };
+            var jobViewModel = new JobsViewModel(job);
+            var mockJobsRepository = new Mock<IJobsRepository>();
+            mockJobsRepository.Setup(repo => repo.Get(jobId))
+                .ReturnsAsync(job);
+
+            // Act
+            var resultFromJobsGet = await mockJobsRepository.Object.Get(jobId);
+
+            // Assert
+            Assert.NotNull(resultFromJobsGet);
+            Assert.IsType<Jobs>(resultFromJobsGet);
+            
         }
     }
 }
