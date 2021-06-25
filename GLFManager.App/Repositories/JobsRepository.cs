@@ -19,10 +19,13 @@ namespace GLFManager.App.Repositories
         public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
-            for (int i=0; i <= createJob.Employees.Count - 1; i++)
+            if (createJob.Employees != null)
             {
-                Employee employee = _context.Employees.Find(createJob.Employees[i]);
-                job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee});
+                for (int i=0; i <= createJob.Employees.Count - 1; i++)
+                {
+                    Employee employee = _context.Employees.Find(createJob.Employees[i]);
+                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee});
+                }
             }
 
             var createdJob = await Create(job);

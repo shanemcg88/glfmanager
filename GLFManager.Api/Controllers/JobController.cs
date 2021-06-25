@@ -29,5 +29,30 @@ namespace GLFManager.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{jobId}")]
+        public async Task<ActionResult<JobsViewModel>> GetJob([FromRoute] Guid jobId)
+        {
+            var result = await _jobsRepository.Get(jobId);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(new JobsViewModel(result));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<JobsViewModel>>> GetAllJobs()
+        {
+            var allJobs = await _jobsRepository.GetAll();
+
+            if (allJobs.Count == 0)
+                return NotFound("No jobs found");
+
+            var toViewModels = allJobs.Select(job => new JobsViewModel(job)).ToList();
+
+            return Ok(toViewModels);
+
+        }
+
     }
 }
