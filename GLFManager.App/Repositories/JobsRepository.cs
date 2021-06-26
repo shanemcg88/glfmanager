@@ -32,5 +32,15 @@ namespace GLFManager.App.Repositories
 
             return new JobsViewModel(createdJob);
         }
+
+        public async Task<JobsViewModel> AddAddEmployeesToJob(AddEmployeesToJobViewModel employees)
+        {
+            var job = _context.Jobs.Find(employees.JobId);
+
+            if (job.NumberOfPositions == 0)
+            {
+                return 
+            }
+        }
     }
 }

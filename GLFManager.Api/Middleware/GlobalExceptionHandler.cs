@@ -36,7 +36,11 @@ namespace GLFManager.Middleware
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         errorMessage = e.Message;
                         break;
-                    default: // some uknown error. We want to prevent generic 500 errors from being returned.
+                    case NoPositionsOpenException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        errorMessage = e.Message;
+                        break;
+                    default: // some unknown error. We want to prevent generic 500 errors from being returned.
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         errorMessage = "We're sorry, your request could not be completed: " + ex.Message;
                         break;
