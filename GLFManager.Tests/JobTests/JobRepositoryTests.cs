@@ -25,7 +25,7 @@ namespace GLFManager.Tests.JobTests
             var employee1 = new Employee { Id = employee1Id, FirstName = "employee1" };
             var employee2 = new Employee { Id = employee2Id, FirstName = "employee2" };
 
-            var createJob = new CreateJobViewModel { CompanyId = companyId, Address = "123 street", Employees = EmployeeList };
+            var createJob = new CreateJobViewModel { CompanyId = companyId, Address = "123 street", NumberOfPositions = 0};
             var job = new Jobs(createJob) { Id = jobId };
 
             var mockJobsRepository = new Mock<IJobsRepository>();
@@ -104,9 +104,21 @@ namespace GLFManager.Tests.JobTests
         public async Task AddEmployeesToExistingJob()
         {
             // Arrange
-            var job = CreateJob();
+            Guid employee1Id = new Guid("cce4af32-b63a-4dac-971d-1934ff6115bb");
+            Guid employee2Id = new Guid("c112ad1a-d440-45fd-84ba-4e4cda41c4c0");
+            List<Guid> employeeList = new List<Guid>() { employee1Id, employee2Id };
 
+            var job = await CreateJob();
+            AddEmployeesToJobViewModel addEmployees = new AddEmployeesToJobViewModel() { JobId = job.Id, EmployeeIds = employeeList };
+            var mockJobsRepository = new Mock<IJobsRepository>();
+            mockJobsRepository.Setup(repo => repo.AddEmployeesToJob(addEmployees))
+                .ReturnsAsync(new JobsViewModel(job) { Id = job.Id });
 
+            // Act
+            var resultFromAddEmployeesToJob = await mockJobsRepository.Object.AddEmployeesToJob(addEmployees);
+
+            // Assert
+            Assert.NotNull(resultFromAddEmployeesToJob);
 
         }
     }

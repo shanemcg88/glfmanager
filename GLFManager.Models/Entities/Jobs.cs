@@ -30,7 +30,7 @@ namespace GLFManager.Models.Entities
         public Guid CompanyId { get; set; }
         public Company Company { get; set; }
 
-        public ICollection<JobsEmployee> JobsEmployees { get; set; }
+        public ICollection<JobsEmployee> JobsEmployees { get; set; } = new List<JobsEmployee>();
 
     }
 }

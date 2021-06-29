@@ -1,4 +1,5 @@
-﻿using GLFManager.App.Repositories.Interfaces;
+﻿using GLFManager.App.Exceptions;
+using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Jobs;
 using System;
@@ -33,14 +34,32 @@ namespace GLFManager.App.Repositories
             return new JobsViewModel(createdJob);
         }
 
-        public async Task<JobsViewModel> AddAddEmployeesToJob(AddEmployeesToJobViewModel employees)
+        public async Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel employees)
         {
-            var job = _context.Jobs.Find(employees.JobId);
+            var job = await _context.Jobs.FindAsync(employees.JobId);
 
-            if (job.NumberOfPositions == 0)
+            if (job == null)
+                throw new NotFoundException("Job doesn't exist");
+
+            if (job.NumberOfPositions == 0 || job.NumberOfPositions < employees.EmployeeIds.Count)
             {
-                return 
+               throw new NoPositionsOpenException("No positions open");
             }
+            else
+            {
+                job.EmployeeIds = employees.EmployeeIds;
+                for (int i = 0; i <= employees.EmployeeIds.Count - 1; i++)
+                {
+                    Employee employee = await _context.Employees.FindAsync(employees.EmployeeIds[i]);
+                    if (employee == null)
+                        throw new NotFoundException("Employee " + employees.EmployeeIds[i] + " doesn't exist");
+
+                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employees.EmployeeIds[i], Employee = employee });
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return new JobsViewModel(job);
         }
     }
 }
