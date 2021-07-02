@@ -34,12 +34,43 @@ namespace GLFManager.App.Repositories
             return new JobsViewModel(createdJob);
         }
 
+        private async Task<Employee> GetEmployee(Guid employeeId)
+        {
+            Employee employee = await _context.Employees.FindAsync(employeeId);
+            if (employee == null)
+                throw new NotFoundException("Employee " + employeeId + " doesn't exist");
+
+            return employee;
+        }
+        public async Task<JobsViewModel> EditJob(EditJob editJob)
+        {
+            var job = await Get(editJob.JobId);
+
+            job.Address = editJob.Address;
+            job.Contact = editJob.Contact;
+            job.PhoneNumber = editJob.PhoneNumber;
+            job.NumberOfPositions = editJob.NumberOfPositions;
+            job.Positions = editJob.Positions;
+
+            if (job.EmployeeIds != editJob.EmployeeIds)
+            {
+                for (int i = 0; i <= editJob.EmployeeIds.Count - 1; i++)
+                {
+                    Employee employee = await GetEmployee(editJob.EmployeeIds[i]);
+                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = editJob.EmployeeIds[i], Employee = employee });
+                }
+            }
+
+            job.EmployeeIds = editJob.EmployeeIds;
+
+            await _context.SaveChangesAsync();
+
+            return new JobsViewModel(job);
+        }
+
         public async Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel employees)
         {
-            var job = await _context.Jobs.FindAsync(employees.JobId);
-
-            if (job == null)
-                throw new NotFoundException("Job doesn't exist");
+            var job = await Get(employees.JobId);
 
             if (job.NumberOfPositions == 0 || job.NumberOfPositions < employees.EmployeeIds.Count)
             {
@@ -56,8 +87,24 @@ namespace GLFManager.App.Repositories
 
                     job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employees.EmployeeIds[i], Employee = employee });
                 }
+
                 await _context.SaveChangesAsync();
             }
+
+            return new JobsViewModel(job);
+        }
+
+        public async Task<JobsViewModel> AddPositionsToJob (AddPositionsToJobViewModel jobPositions)
+        {
+            var job = await Get(jobPositions.JobId);
+
+            if (jobPositions.NumberOfOpenings != jobPositions.PositionDescriptions.Count)
+                throw new JobDescriptionsDoesNotEqualPositionsOpenException("Number of openings does not match position descriptions");
+
+            job.NumberOfPositions = jobPositions.NumberOfOpenings;
+            job.Positions = jobPositions.PositionDescriptions;
+
+            await _context.SaveChangesAsync();
 
             return new JobsViewModel(job);
         }
