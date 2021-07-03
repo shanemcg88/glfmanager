@@ -4,6 +4,7 @@ using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,9 +23,9 @@ namespace GLFManager.App.Repositories
             var job = new Jobs(createJob);
             if (createJob.Employees != null)
             {
-                for (int i=0; i <= createJob.Employees.Count - 1; i++)
+                for (int i=0; i <= createJob.Employees.Count; i++)
                 {
-                    Employee employee = _context.Employees.Find(createJob.Employees[i]);
+                    Employee employee = await _context.Employees.FindAsync(createJob.Employees[i]);
                     job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee});
                 }
             }
@@ -54,14 +55,41 @@ namespace GLFManager.App.Repositories
 
             if (job.EmployeeIds != editJob.EmployeeIds)
             {
-                for (int i = 0; i <= editJob.EmployeeIds.Count - 1; i++)
+                job.EmployeeIds = editJob.EmployeeIds;
+                var jobEmployees = new List<JobsEmployee>();
+
+                // clear the jobemployee.employee and employee ids
+                var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
+                _context.RemoveRange(jeList);
+
+
+                // add new employees to the jobemployee db
+
+                foreach (var employeeId in editJob.EmployeeIds)
                 {
-                    Employee employee = await GetEmployee(editJob.EmployeeIds[i]);
-                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = editJob.EmployeeIds[i], Employee = employee });
+                    Employee employee = await GetEmployee(employeeId);
+                    var je = new JobsEmployee() 
+                    {
+                        JobsId = editJob.JobId,
+                        Jobs = job,
+                        EmployeeId = employeeId,
+                        Employee = employee
+                    };
+
+                    jobEmployees.Add(je);
                 }
+
+                _context.JobsEmployees.AddRange(jobEmployees);
+
+                //for (int i = 0; i <= editJob.EmployeeIds.Count - 1; i++)
+                //{
+                //    Employee employee = await GetEmployee(editJob.EmployeeIds[i]);
+                //    var jobEmployee = new JobsEmployee() { }
+                //    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, Jobs = job, EmployeeId = editJob.EmployeeIds[i], Employee = employee });
+                //}
             }
 
-            job.EmployeeIds = editJob.EmployeeIds;
+            _context.Jobs.Update(job);
 
             await _context.SaveChangesAsync();
 

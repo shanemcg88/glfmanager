@@ -47,9 +47,15 @@ namespace GLFManager.App.Repositories
             return result;
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(Guid id)
         {
+            var result = await _entityDbSet.FindAsync(id).ConfigureAwait(false);
 
+            if (result == null)
+                throw new NotFoundException("TEntity " + id + "not found");
+
+            _entityDbSet.Remove(result);
+            await _context.SaveChangesAsync();
         }
 
 
