@@ -1,6 +1,7 @@
 ﻿using GLFManager.App.Exceptions;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Employees;
 using GLFManager.Models.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
@@ -21,18 +22,22 @@ namespace GLFManager.App.Repositories
         public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
+            List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
+
             if (createJob.Employees != null)
             {
-                for (int i=0; i <= createJob.Employees.Count; i++)
+                for (int i=0; i < createJob.Employees.Count; i++)
                 {
                     Employee employee = await _context.Employees.FindAsync(createJob.Employees[i]);
+                    EmployeeList.Add(new EmployeeViewModel(employee));
                     job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee});
                 }
+
             }
 
             var createdJob = await Create(job);
 
-            return new JobsViewModel(createdJob);
+            return new JobsViewModel(createdJob) { EmployeeList = EmployeeList };
         }
 
         private async Task<Employee> GetEmployee(Guid employeeId)
@@ -52,6 +57,7 @@ namespace GLFManager.App.Repositories
             job.PhoneNumber = editJob.PhoneNumber;
             job.NumberOfPositions = editJob.NumberOfPositions;
             job.Positions = editJob.Positions;
+            List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
 
             if (job.EmployeeIds != editJob.EmployeeIds)
             {
@@ -68,6 +74,8 @@ namespace GLFManager.App.Repositories
                 foreach (var employeeId in editJob.EmployeeIds)
                 {
                     Employee employee = await GetEmployee(employeeId);
+                    EmployeeList.Add(new EmployeeViewModel(employee));
+
                     var je = new JobsEmployee() 
                     {
                         JobsId = editJob.JobId,
@@ -80,20 +88,12 @@ namespace GLFManager.App.Repositories
                 }
 
                 _context.JobsEmployees.AddRange(jobEmployees);
-
-                //for (int i = 0; i <= editJob.EmployeeIds.Count - 1; i++)
-                //{
-                //    Employee employee = await GetEmployee(editJob.EmployeeIds[i]);
-                //    var jobEmployee = new JobsEmployee() { }
-                //    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, Jobs = job, EmployeeId = editJob.EmployeeIds[i], Employee = employee });
-                //}
             }
 
             _context.Jobs.Update(job);
-
             await _context.SaveChangesAsync();
 
-            return new JobsViewModel(job);
+            return new JobsViewModel(job) { EmployeeList = EmployeeList };
         }
 
         public async Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel employees)

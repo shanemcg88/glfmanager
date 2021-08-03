@@ -11,7 +11,5 @@ namespace GLFManager.App.Repositories.Interfaces
     {
         Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob);
         Task<JobsViewModel> EditJob(EditJob editJob);
-        Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel addEmployees);
-        Task<JobsViewModel> AddPositionsToJob(AddPositionsToJobViewModel jobPositions);
     }
 }

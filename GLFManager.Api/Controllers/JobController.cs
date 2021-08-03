@@ -53,16 +53,8 @@ namespace GLFManager.Api.Controllers
             return Ok(toViewModels);
         }
 
-        [HttpPut("addemployee")]
-        public async Task<ActionResult<JobsViewModel>> AddEmployeesToJob(AddEmployeesToJobViewModel employees)
-        {
-            var result = await _jobsRepository.AddEmployeesToJob(employees);
-
-            return Ok(result);
-        }
-
         [HttpPut("editJob")]
-        public async Task<ActionResult<JobsViewModel>> AddJobPositions(EditJob editJob)
+        public async Task<ActionResult<JobsViewModel>> ModifyJob(EditJob editJob)
         {
             var result = await _jobsRepository.EditJob(editJob);
 
