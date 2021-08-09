@@ -17,7 +17,6 @@ namespace GLFManager.Models.ViewModels.Jobs
             NumberOfPositions = src.NumberOfPositions;
             Positions = src.Positions;
             CompanyId = src.CompanyId;
-            //JobsEmployees = src.JobsEmployees;
         }
         public Guid Id { get; set; }
         public string Address { get; set; }
@@ -27,6 +26,5 @@ namespace GLFManager.Models.ViewModels.Jobs
         public List<string> Positions { get; set; }
         public Guid CompanyId { get; set; }
         public List<EmployeeViewModel> EmployeeList { get; set; }
-        //public ICollection<JobsEmployee> JobsEmployees { get; set; }
     }
 }

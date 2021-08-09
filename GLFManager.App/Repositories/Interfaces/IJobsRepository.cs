@@ -10,7 +10,7 @@ namespace GLFManager.App.Repositories.Interfaces
 {
     public interface IJobsRepository : IBaseRepository<Jobs, Guid>
     {
-        Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob);
+        Task<JobsDto> CreateJobSetup(CreateJobViewModel createJob);
         Task<JobsViewModel> EditJob(EditJob editJob);
         Task<IReadOnlyList<JobsDto>> RetrieveAllJobs();
     }

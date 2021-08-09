@@ -26,7 +26,7 @@ namespace GLFManager.Api.Controllers
         }
 
         [HttpPost("createjob")]
-        public async Task<ActionResult<JobsViewModel>> CreateJob(CreateJobViewModel createJob)
+        public async Task<ActionResult<JobsDto>> CreateJob(CreateJobViewModel createJob)
         {
             var result = await _jobsRepository.CreateJobSetup(createJob);
             return Ok(result);

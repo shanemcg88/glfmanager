@@ -27,10 +27,9 @@ namespace GLFManager.App.Repositories
         public async Task<IReadOnlyList<JobsDto>> RetrieveAllJobs()
         {
             List<JobsDto> jobList = new List<JobsDto>();
+            List<Jobs> jobFromDb = await _context.Jobs.Include(x => x.JobsEmployees).ThenInclude(y => y.Employee).ToListAsync();
 
-            List<Jobs> testJobs = await _context.Jobs.Include(x => x.JobsEmployees).ThenInclude(y => y.Employee).ToListAsync();
-
-            foreach(var job in testJobs)
+            foreach(var job in jobFromDb)
             {
                 jobList.Add(_mapper.Map<Jobs, JobsDto>(job));
             }
@@ -38,25 +37,23 @@ namespace GLFManager.App.Repositories
             return jobList;
         }
 
-        public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
+        public async Task<JobsDto> CreateJobSetup(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
-            List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
 
             if (createJob.Employees != null)
             {
-                for (int i=0; i < createJob.Employees.Count; i++)
+                for (int i = 0; i < createJob.Employees.Count; i++)
                 {
                     Employee employee = await _context.Employees.FindAsync(createJob.Employees[i]);
-                    EmployeeList.Add(new EmployeeViewModel(employee));
-                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee});
+                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee });
                 }
-
             }
 
             var createdJob = await Create(job);
+            var jobToView = _mapper.Map<Jobs, JobsDto>(createdJob);
 
-            return new JobsViewModel(createdJob) { EmployeeList = EmployeeList };
+            return jobToView;
         }
 
         private async Task<Employee> GetEmployee(Guid employeeId)
