@@ -24,10 +24,25 @@ namespace GLFManager.App.Repositories
             _mapper = mapper;
         }
 
+        public async Task<JobsDto> GetJobById(Guid jobId)
+        {
+            Jobs jobFromDb = await _context.Jobs
+                .Include(x => x.JobsEmployees)
+                .ThenInclude(y => y.Employee)
+                .FirstOrDefaultAsync(j => j.Id == jobId);
+                
+            var jobsToView = _mapper.Map<Jobs, JobsDto>(jobFromDb);
+
+            return jobsToView;
+        }
+
         public async Task<IReadOnlyList<JobsDto>> RetrieveAllJobs()
         {
             List<JobsDto> jobList = new List<JobsDto>();
-            List<Jobs> jobFromDb = await _context.Jobs.Include(x => x.JobsEmployees).ThenInclude(y => y.Employee).ToListAsync();
+            List<Jobs> jobFromDb = await _context.Jobs
+                .Include(x => x.JobsEmployees)
+                .ThenInclude(y => y.Employee)
+                .ToListAsync();
 
             foreach(var job in jobFromDb)
             {
@@ -64,97 +79,45 @@ namespace GLFManager.App.Repositories
 
             return employee;
         }
-        public async Task<JobsViewModel> EditJob(EditJob editJob)
+
+        public async Task<JobsDto> EditJob(EditJob editJob)
         {
-            return null;
-            //var job = await Get(editJob.JobId);
+            var job = await Get(editJob.JobId);
 
-            //job.Address = editJob.Address;
-            //job.Contact = editJob.Contact;
-            //job.PhoneNumber = editJob.PhoneNumber;
-            //job.NumberOfPositions = editJob.NumberOfPositions;
-            //job.Positions = editJob.Positions;
-            //List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
+            job.Address = editJob.Address;
+            job.Contact = editJob.Contact;
+            job.PhoneNumber = editJob.PhoneNumber;
+            job.NumberOfPositions = editJob.NumberOfPositions;
+            job.Positions = editJob.Positions;
 
-            //if (job.EmployeeId != editJob.EmployeeIds)
-            //{
-            //    job.EmployeeId = editJob.EmployeeIds;
-            //    var jobEmployees = new List<JobsEmployee>();
+            var jobEmployees = new List<JobsEmployee>();
 
-            //    // clear the jobemployee.employee and employee ids
-            //    var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
-            //    _context.RemoveRange(jeList);
+            // clear the jobemployee.employee and employee ids
+            var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
+            _context.RemoveRange(jeList);
 
+            // add new employees to the jobemployee table
+            foreach (var employeeId in editJob.EmployeeIds)
+            {
+                Employee employee = await GetEmployee(employeeId);
 
-            //    // add new employees to the jobemployee db
+                var je = new JobsEmployee() {
+                    JobsId = editJob.JobId,
+                    Jobs = job,
+                    EmployeeId = employeeId,
+                    Employee = employee
+                };
 
-            //    foreach (var employeeId in editJob.EmployeeIds)
-            //    {
-            //        Employee employee = await GetEmployee(employeeId);
-            //        EmployeeList.Add(new EmployeeViewModel(employee));
+                jobEmployees.Add(je);
+            }
 
-            //        var je = new JobsEmployee() 
-            //        {
-            //            JobsId = editJob.JobId,
-            //            Jobs = job,
-            //            EmployeeId = employeeId,
-            //            Employee = employee
-            //        };
+            _context.JobsEmployees.AddRange(jobEmployees);
 
-            //        jobEmployees.Add(je);
-            //    }
-
-            //    _context.JobsEmployees.AddRange(jobEmployees);
-            //}
-
-            //_context.Jobs.Update(job);
-            //await _context.SaveChangesAsync();
-
-            //return new JobsViewModel(job) { EmployeeList = EmployeeList };
-        }
-
-        public async Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel employees)
-        {
-            return null;
-            //var job = await Get(employees.JobId);
-
-            //if (job.NumberOfPositions == 0 || job.NumberOfPositions < employees.EmployeeIds.Count)
-            //{
-            //   throw new NoPositionsOpenException("No positions open");
-            //}
-            //else
-            //{
-            //    job.EmployeeId = employees.EmployeeIds;
-            //    for (int i = 0; i <= employees.EmployeeIds.Count - 1; i++)
-            //    {
-            //        Employee employee = await _context.Employees.FindAsync(employees.EmployeeIds[i]);
-            //        if (employee == null)
-            //            throw new NotFoundException("Employee " + employees.EmployeeIds[i] + " doesn't exist");
-
-            //        job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employees.EmployeeIds[i], Employee = employee });
-            //    }
-
-            //    await _context.SaveChangesAsync();
-            //}
-
-            //return new JobsViewModel(job);
-        }
-
-        public async Task<JobsViewModel> AddPositionsToJob (AddPositionsToJobViewModel jobPositions)
-        {
-            var job = await Get(jobPositions.JobId);
-
-            if (jobPositions.NumberOfOpenings != jobPositions.PositionDescriptions.Count)
-                throw new JobDescriptionsDoesNotEqualPositionsOpenException("Number of openings does not match position descriptions");
-
-            job.NumberOfPositions = jobPositions.NumberOfOpenings;
-            job.Positions = jobPositions.PositionDescriptions;
-
+            _context.Jobs.Update(job);
             await _context.SaveChangesAsync();
 
-            return new JobsViewModel(job);
+            return _mapper.Map<Jobs, JobsDto>(job);
+             
         }
-
-
     }
 }

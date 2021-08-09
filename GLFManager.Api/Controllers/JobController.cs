@@ -33,14 +33,14 @@ namespace GLFManager.Api.Controllers
         }
 
         [HttpGet("{jobId}")]
-        public async Task<ActionResult<JobsViewModel>> GetJob([FromRoute] Guid jobId)
+        public async Task<ActionResult<JobsDto>> GetJob([FromRoute] Guid jobId)
         {
-            var result = await _jobsRepository.Get(jobId);
+            var result = await _jobsRepository.GetJobById(jobId);
+            return Ok(result);
+            //if (result == null)
+            //    return NotFound();
 
-            if (result == null)
-                return NotFound();
-
-            return Ok(new JobsViewModel(result));
+            //return Ok(new JobsViewModel(result));
         }
 
         [HttpGet]
@@ -55,7 +55,7 @@ namespace GLFManager.Api.Controllers
         }
 
         [HttpPut("editJob")]
-        public async Task<ActionResult<JobsViewModel>> ModifyJob(EditJob editJob)
+        public async Task<ActionResult<JobsDto>> ModifyJob(EditJob editJob)
         {
             var result = await _jobsRepository.EditJob(editJob);
 
