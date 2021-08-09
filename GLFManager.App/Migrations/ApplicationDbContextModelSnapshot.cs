@@ -134,9 +134,6 @@ namespace GLFManager.App.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<List<Guid>>("EmployeeIds")
-                        .HasColumnType("uuid[]");
-
                     b.Property<int>("NumberOfPositions")
                         .HasColumnType("integer");
 

@@ -1,5 +1,8 @@
-﻿using GLFManager.App.Repositories;
+﻿using AutoMapper;
+using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
+using GLFManager.Models.Dtos;
+using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Jobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +19,7 @@ namespace GLFManager.Api.Controllers
     public class JobController : ControllerBase
     {
         private readonly IJobsRepository _jobsRepository;
-        
+
         public JobController(IJobsRepository jobsReposistory)
         {
             _jobsRepository = jobsReposistory;
@@ -41,16 +44,14 @@ namespace GLFManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<JobsViewModel>>> GetAllJobs()
+        public async Task<ActionResult<IReadOnlyList<JobsDto>>> GetAllJobs()
         {
-            var allJobs = await _jobsRepository.GetAll();
+            var allJobs = await _jobsRepository.RetrieveAllJobs();
 
             if (allJobs.Count == 0)
                 return NotFound("No jobs found");
 
-            var toViewModels = allJobs.Select(job => new JobsViewModel(job)).ToList();
-
-            return Ok(toViewModels);
+            return Ok(allJobs);
         }
 
         [HttpPut("editJob")]

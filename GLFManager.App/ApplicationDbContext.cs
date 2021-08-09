@@ -19,11 +19,8 @@ namespace GLFManager.App
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-            builder.Entity<Company>()
-                .HasIndex(company => new { company.Name })
-                .IsUnique(true);
 
+            base.OnModelCreating(builder);
             builder.Entity<JobsEmployee>()
                 .HasKey(je => new { je.JobsId, je.EmployeeId });
             builder.Entity<JobsEmployee>()
@@ -34,6 +31,18 @@ namespace GLFManager.App
                 .HasOne(je => je.Employee)
                 .WithMany(e => e.JobsEmployees)
                 .HasForeignKey(je => je.EmployeeId);
+
+            builder.Entity<Company>()
+                .HasIndex(company => new { company.Name })
+                .IsUnique(true);
+
+            //builder.Entity<JobsEmployee>()
+            //    .HasKey(je => new { je.JobsId, je.EmployeeId });
+            //builder.Entity<JobsEmployee>()
+            //    .HasOne(je => je.Jobs)
+            //    .WithMany(j => j.JobsEmployees)
+            //    .HasForeignKey(je => je.JobsId);
+
         }
     }
 }

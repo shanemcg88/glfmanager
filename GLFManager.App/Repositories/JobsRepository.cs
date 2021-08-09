@@ -1,8 +1,11 @@
-﻿using GLFManager.App.Exceptions;
+﻿using AutoMapper;
+using GLFManager.App.Exceptions;
 using GLFManager.App.Repositories.Interfaces;
+using GLFManager.Models.Dtos;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Employees;
 using GLFManager.Models.ViewModels.Jobs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +17,25 @@ namespace GLFManager.App.Repositories
     public class JobsRepository : BaseRepository<Jobs, Guid, ApplicationDbContext>, IJobsRepository
     {
         private readonly ApplicationDbContext _context;
-        public JobsRepository(ApplicationDbContext context) : base (context)
+        private readonly IMapper _mapper;
+        public JobsRepository(ApplicationDbContext context, IMapper mapper) : base (context)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<IReadOnlyList<JobsDto>> RetrieveAllJobs()
+        {
+            List<JobsDto> jobList = new List<JobsDto>();
+
+            List<Jobs> testJobs = await _context.Jobs.Include(x => x.JobsEmployees).ThenInclude(y => y.Employee).ToListAsync();
+
+            foreach(var job in testJobs)
+            {
+                jobList.Add(_mapper.Map<Jobs, JobsDto>(job));
+            }
+
+            return jobList;
         }
 
         public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
@@ -50,76 +69,78 @@ namespace GLFManager.App.Repositories
         }
         public async Task<JobsViewModel> EditJob(EditJob editJob)
         {
-            var job = await Get(editJob.JobId);
+            return null;
+            //var job = await Get(editJob.JobId);
 
-            job.Address = editJob.Address;
-            job.Contact = editJob.Contact;
-            job.PhoneNumber = editJob.PhoneNumber;
-            job.NumberOfPositions = editJob.NumberOfPositions;
-            job.Positions = editJob.Positions;
-            List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
+            //job.Address = editJob.Address;
+            //job.Contact = editJob.Contact;
+            //job.PhoneNumber = editJob.PhoneNumber;
+            //job.NumberOfPositions = editJob.NumberOfPositions;
+            //job.Positions = editJob.Positions;
+            //List<EmployeeViewModel> EmployeeList = new List<EmployeeViewModel>();
 
-            if (job.EmployeeIds != editJob.EmployeeIds)
-            {
-                job.EmployeeIds = editJob.EmployeeIds;
-                var jobEmployees = new List<JobsEmployee>();
+            //if (job.EmployeeId != editJob.EmployeeIds)
+            //{
+            //    job.EmployeeId = editJob.EmployeeIds;
+            //    var jobEmployees = new List<JobsEmployee>();
 
-                // clear the jobemployee.employee and employee ids
-                var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
-                _context.RemoveRange(jeList);
+            //    // clear the jobemployee.employee and employee ids
+            //    var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
+            //    _context.RemoveRange(jeList);
 
 
-                // add new employees to the jobemployee db
+            //    // add new employees to the jobemployee db
 
-                foreach (var employeeId in editJob.EmployeeIds)
-                {
-                    Employee employee = await GetEmployee(employeeId);
-                    EmployeeList.Add(new EmployeeViewModel(employee));
+            //    foreach (var employeeId in editJob.EmployeeIds)
+            //    {
+            //        Employee employee = await GetEmployee(employeeId);
+            //        EmployeeList.Add(new EmployeeViewModel(employee));
 
-                    var je = new JobsEmployee() 
-                    {
-                        JobsId = editJob.JobId,
-                        Jobs = job,
-                        EmployeeId = employeeId,
-                        Employee = employee
-                    };
+            //        var je = new JobsEmployee() 
+            //        {
+            //            JobsId = editJob.JobId,
+            //            Jobs = job,
+            //            EmployeeId = employeeId,
+            //            Employee = employee
+            //        };
 
-                    jobEmployees.Add(je);
-                }
+            //        jobEmployees.Add(je);
+            //    }
 
-                _context.JobsEmployees.AddRange(jobEmployees);
-            }
+            //    _context.JobsEmployees.AddRange(jobEmployees);
+            //}
 
-            _context.Jobs.Update(job);
-            await _context.SaveChangesAsync();
+            //_context.Jobs.Update(job);
+            //await _context.SaveChangesAsync();
 
-            return new JobsViewModel(job) { EmployeeList = EmployeeList };
+            //return new JobsViewModel(job) { EmployeeList = EmployeeList };
         }
 
         public async Task<JobsViewModel> AddEmployeesToJob(AddEmployeesToJobViewModel employees)
         {
-            var job = await Get(employees.JobId);
+            return null;
+            //var job = await Get(employees.JobId);
 
-            if (job.NumberOfPositions == 0 || job.NumberOfPositions < employees.EmployeeIds.Count)
-            {
-               throw new NoPositionsOpenException("No positions open");
-            }
-            else
-            {
-                job.EmployeeIds = employees.EmployeeIds;
-                for (int i = 0; i <= employees.EmployeeIds.Count - 1; i++)
-                {
-                    Employee employee = await _context.Employees.FindAsync(employees.EmployeeIds[i]);
-                    if (employee == null)
-                        throw new NotFoundException("Employee " + employees.EmployeeIds[i] + " doesn't exist");
+            //if (job.NumberOfPositions == 0 || job.NumberOfPositions < employees.EmployeeIds.Count)
+            //{
+            //   throw new NoPositionsOpenException("No positions open");
+            //}
+            //else
+            //{
+            //    job.EmployeeId = employees.EmployeeIds;
+            //    for (int i = 0; i <= employees.EmployeeIds.Count - 1; i++)
+            //    {
+            //        Employee employee = await _context.Employees.FindAsync(employees.EmployeeIds[i]);
+            //        if (employee == null)
+            //            throw new NotFoundException("Employee " + employees.EmployeeIds[i] + " doesn't exist");
 
-                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employees.EmployeeIds[i], Employee = employee });
-                }
+            //        job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employees.EmployeeIds[i], Employee = employee });
+            //    }
 
-                await _context.SaveChangesAsync();
-            }
+            //    await _context.SaveChangesAsync();
+            //}
 
-            return new JobsViewModel(job);
+            //return new JobsViewModel(job);
         }
 
         public async Task<JobsViewModel> AddPositionsToJob (AddPositionsToJobViewModel jobPositions)
@@ -136,5 +157,7 @@ namespace GLFManager.App.Repositories
 
             return new JobsViewModel(job);
         }
+
+
     }
 }

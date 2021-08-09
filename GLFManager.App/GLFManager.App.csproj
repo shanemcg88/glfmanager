@@ -11,9 +11,20 @@
     <Compile Remove="Migrations\20210622053241_moreModsToJobsEntity.Designer.cs" />
     <Compile Remove="Migrations\20210622054109_moreModsToJobsEntity.cs" />
     <Compile Remove="Migrations\20210622054109_moreModsToJobsEntity.Designer.cs" />
+    <Compile Remove="Migrations\20210808214231_EditEmployeeIdInJobEntity.cs" />
+    <Compile Remove="Migrations\20210808214231_EditEmployeeIdInJobEntity.Designer.cs" />
+    <Compile Remove="Migrations\20210808215524_EditEmployeeIdInJobEntity.cs" />
+    <Compile Remove="Migrations\20210808215524_EditEmployeeIdInJobEntity.Designer.cs" />
+    <Compile Remove="Migrations\20210808215936_EditEmployeeIdInJobEntity.cs" />
+    <Compile Remove="Migrations\20210808215936_EditEmployeeIdInJobEntity.Designer.cs" />
+    <Compile Remove="Migrations\20210808221737_RESETTINGJOBTABLE.cs" />
+    <Compile Remove="Migrations\20210808221737_RESETTINGJOBTABLE.Designer.cs" />
+    <Compile Remove="Migrations\20210809030613_test.cs" />
+    <Compile Remove="Migrations\20210809030613_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.11">

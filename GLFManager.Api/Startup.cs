@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using GLFManager.Api.Helpers;
 using GLFManager.App;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
@@ -80,7 +81,7 @@ namespace GLFManager.Api
                 s.RegisterValidatorsFromAssemblyContaining<Startup>();
                 //s.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
             });
-
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddScoped<IUserAccountRepository, UserAccountRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();

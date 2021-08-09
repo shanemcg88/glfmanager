@@ -33,6 +33,8 @@ namespace GLFManager.Models.Entities
         public string PostalCode { get; set; }
         public List<string> Skills { get; set; }
 
+        //public ICollection<Jobs> Jobs { get; set; }
+        //public ICollection<JobsEmployee> JobsEmployees { get; set; }
         public ICollection<JobsEmployee> JobsEmployees { get; set; }
     }
 }
