@@ -59,7 +59,7 @@ namespace GLFManager.Tests.JobTests
 
             var mockJobsRepository = new Mock<IJobsRepository>();
             mockJobsRepository.Setup(repo => repo.CreateJobSetup(createJob))
-                .ReturnsAsync(new JobsViewModel(job));
+                .ReturnsAsync(new JobsViewModel());
 
             // Act
             var resultFromJobCreate = await mockJobsRepository.Object.CreateJobSetup(createJob);
@@ -86,7 +86,7 @@ namespace GLFManager.Tests.JobTests
             List<string> positions = new List<string>() { "general labour", "skilled labour" };
 
             var job = new Jobs { Id = jobId, Address = address, Contact = contact, PhoneNumber = phoneNumber, NumberOfPositions = numberOfPositions, CompanyId = companyId };
-            var jobViewModel = new JobsViewModel(job);
+            var jobViewModel = new JobsViewModel();
             var mockJobsRepository = new Mock<IJobsRepository>();
             mockJobsRepository.Setup(repo => repo.Get(jobId))
                 .ReturnsAsync(job);

@@ -11,6 +11,7 @@ namespace GLFManager.Models.Entities
         public Jobs(CreateJobViewModel src)
         {
             JobsEmployees = new List<JobsEmployee>();
+            DateOfJob = src.DateOfJob;
             Address = src.Address;
             Contact = src.Contact;
             PhoneNumber = src.PhoneNumber;
@@ -20,6 +21,8 @@ namespace GLFManager.Models.Entities
             //EmployeeIds = src.Employees;
             //JobsEmployees = src.JobsEmployees;
         }
+
+        public DateTime DateOfJob { get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
         public string PhoneNumber { get; set; }

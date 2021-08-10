@@ -15,7 +15,7 @@ namespace GLFManager.Api.Helpers
         public MappingProfiles()
         {
             // To include the employee list in the current job
-            CreateMap<Jobs, JobsDto>()
+            CreateMap<Jobs, JobsViewModel>()
                 .ForMember(dest => dest.EmployeeList, opt => opt.MapFrom(j => j.JobsEmployees.Select(je => new EmployeeViewModel(je.Employee)).ToList()));
         }
     }

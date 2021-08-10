@@ -24,21 +24,21 @@ namespace GLFManager.App.Repositories
             _mapper = mapper;
         }
 
-        public async Task<JobsDto> GetJobById(Guid jobId)
+        public async Task<JobsViewModel> GetJobById(Guid jobId)
         {
             Jobs jobFromDb = await _context.Jobs
                 .Include(x => x.JobsEmployees)
                 .ThenInclude(y => y.Employee)
                 .FirstOrDefaultAsync(j => j.Id == jobId);
                 
-            var jobsToView = _mapper.Map<Jobs, JobsDto>(jobFromDb);
+            var jobsToView = _mapper.Map<Jobs, JobsViewModel>(jobFromDb);
 
             return jobsToView;
         }
 
-        public async Task<IReadOnlyList<JobsDto>> RetrieveAllJobs()
+        public async Task<IReadOnlyList<JobsViewModel>> RetrieveAllJobs()
         {
-            List<JobsDto> jobList = new List<JobsDto>();
+            List<JobsViewModel> jobList = new List<JobsViewModel>();
             List<Jobs> jobFromDb = await _context.Jobs
                 .Include(x => x.JobsEmployees)
                 .ThenInclude(y => y.Employee)
@@ -46,13 +46,13 @@ namespace GLFManager.App.Repositories
 
             foreach(var job in jobFromDb)
             {
-                jobList.Add(_mapper.Map<Jobs, JobsDto>(job));
+                jobList.Add(_mapper.Map<Jobs, JobsViewModel>(job));
             }
 
             return jobList;
         }
 
-        public async Task<JobsDto> CreateJobSetup(CreateJobViewModel createJob)
+        public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
 
@@ -66,7 +66,7 @@ namespace GLFManager.App.Repositories
             }
 
             var createdJob = await Create(job);
-            var jobToView = _mapper.Map<Jobs, JobsDto>(createdJob);
+            var jobToView = _mapper.Map<Jobs, JobsViewModel>(createdJob);
 
             return jobToView;
         }
@@ -80,7 +80,7 @@ namespace GLFManager.App.Repositories
             return employee;
         }
 
-        public async Task<JobsDto> EditJob(EditJob editJob)
+        public async Task<JobsViewModel> EditJob(EditJob editJob)
         {
             var job = await Get(editJob.JobId);
 
@@ -116,7 +116,7 @@ namespace GLFManager.App.Repositories
             _context.Jobs.Update(job);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<Jobs, JobsDto>(job);
+            return _mapper.Map<Jobs, JobsViewModel>(job);
              
         }
     }

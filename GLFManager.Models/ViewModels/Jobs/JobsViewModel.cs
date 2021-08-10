@@ -8,17 +8,8 @@ namespace GLFManager.Models.ViewModels.Jobs
 {
     public class JobsViewModel
     {
-        public JobsViewModel(GLFManager.Models.Entities.Jobs src)
-        {
-            Id = src.Id;
-            Address = src.Address;
-            Contact = src.Contact;
-            PhoneNumber = src.PhoneNumber;
-            NumberOfPositions = src.NumberOfPositions;
-            Positions = src.Positions;
-            CompanyId = src.CompanyId;
-        }
         public Guid Id { get; set; }
+        public DateTime DateOfJob { get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
         public string PhoneNumber { get; set; }
