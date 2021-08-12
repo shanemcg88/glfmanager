@@ -20,6 +20,27 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GLFManager.Tests", "GLFManager.Tests\GLFManager.Tests.csproj", "{BB485DE2-C1EC-4657-A13E-032D023403EB}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "client", "client\", "{0C92902F-E598-4861-AE70-03BA2538646F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64891"
+		Debug.AspNetCompiler.PhysicalPath = "client\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64891\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64891"
+		Release.AspNetCompiler.PhysicalPath = "client\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64891\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64891"
+		SlnRelativePath = "client\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +71,16 @@ Global
 		{BB485DE2-C1EC-4657-A13E-032D023403EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB485DE2-C1EC-4657-A13E-032D023403EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB485DE2-C1EC-4657-A13E-032D023403EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C92902F-E598-4861-AE70-03BA2538646F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C92902F-E598-4861-AE70-03BA2538646F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C92902F-E598-4861-AE70-03BA2538646F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C92902F-E598-4861-AE70-03BA2538646F}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C92902F-E598-4861-AE70-03BA2538646F} = {5C3D0E3E-4A67-4949-8AC8-7C93901D313B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4692A62C-08AA-4AA5-8611-F4B1E002A1B1}

@@ -1,6 +1,17 @@
 version: '3.4'
 
 services:
+  angular-service:
+    image: ${DOCKER_REGISTRY-}glfmanager_ui
+    build:
+      context: client
+      dockerfile: Dockerfile
+    container_name: "glf_ui_container"
+    ports: 
+      - "4200:80"
+    links:
+      - glfmanager.api
+
   glfmanager.api:
     image: ${DOCKER_REGISTRY-}glfmanagerapi
     container_name: "glfmanager.api"
