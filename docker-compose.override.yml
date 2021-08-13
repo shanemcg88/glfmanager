@@ -2,9 +2,10 @@ version: '3.4'
 
 services:
   glfmanager.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+  # uncommented this for the backend to run/retrieve/send requests
+    # environment:
+    #   - ASPNETCORE_ENVIRONMENT=Development
+    #   - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
       - "80"
       - "443"

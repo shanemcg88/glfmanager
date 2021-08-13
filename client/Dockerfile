@@ -9,6 +9,9 @@ RUN npm run build
 # COPY --from=build /usr/local/app/test/client /usr/share/nginx/html
 # EXPOSE 4200:80
 
-FROM nginx:1.20.1-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+# FROM nginx:1.20.1-alpine
+# COPY nginx.conf /etc/nginx/nginx.conf
+# COPY --from=build /usr/src/app/dist/client /usr/share/nginx/html
+
+FROM nginx AS runtime
 COPY --from=build /usr/src/app/dist/client /usr/share/nginx/html
