@@ -97,6 +97,13 @@ namespace GLFManager.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                // FileProvider = new PhysicalFileProvider(
+                //     Path.Combine(env.ContentRootPath, @"ClientApp/dist")),
+                //     RequestPath = new PathString("/ClientApp/dist")
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

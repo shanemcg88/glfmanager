@@ -1,22 +1,24 @@
 version: '3.4'
 
 services:
-  nginx:
-    build:
-      context: nginx
-      dockerfile: Dockerfile
-    ports:
-      - "3050:80"
-    restart: always
+  # nginx:
+  #   build:
+  #     context: nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3050:80"
+  #   restart: always
 
   client:
-    image: ${DOCKER_REGISTRY-}glfmanager_ui
+    image: angulardocker
     build:
-      context: client
+      context: ./ClientApp
       dockerfile: Dockerfile
     container_name: "glf_ui_container"
     ports: 
-      - "4200:80"
+      - "4200:4200"
+    volumes:
+      - "./ClientApp:/frontend"
 
   glfmanager.api:
     image: ${DOCKER_REGISTRY-}glfmanager.api
@@ -52,8 +54,6 @@ services:
       - .:/usr/src/app
     depends_on:
       - "glfmanager.db"
-
-
 
   glfmanager.db:
     restart: on-failure
