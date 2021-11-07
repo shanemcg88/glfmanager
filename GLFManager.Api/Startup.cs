@@ -41,7 +41,11 @@ namespace GLFManager.Api
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder => 
                     {
-                        builder.WithOrigins("http://localhost:4200");
+                        builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                        
                     });
             });
 
@@ -75,7 +79,7 @@ namespace GLFManager.Api
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {

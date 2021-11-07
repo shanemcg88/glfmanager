@@ -29,6 +29,9 @@ namespace GLFManager.Auth
         {
             _configuration = configuration;
         }
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public void ConfigureServices(IServiceCollection services)
         {
             // Set up the database
@@ -37,6 +40,15 @@ namespace GLFManager.Auth
                 b => b.MigrationsAssembly("GLFManager.App")
                 )
             );
+
+            services.AddCors(options => 
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder => 
+                    {
+                        builder.WithOrigins("http://localhost:4200");
+                    });
+            });
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -67,6 +79,9 @@ namespace GLFManager.Auth
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseIdentityServer();
+
+            app.UseCors(MyAllowSpecificOrigins);
+
         }
     }
 }

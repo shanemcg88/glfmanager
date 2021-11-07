@@ -44,7 +44,7 @@ namespace GLFManager.App.Repositories
                     Address = authority + "/connect/token",
                     UserName = loginInput.Email,
                     Password = loginInput.Password,
-                    ClientId = loginInput.ClientId,
+                    ClientId = "mobile",
                     ClientSecret = "UzKjRFnAHffxUFati8HMjSEzwMGgGHmN",
                     Scope = "glfapi.scope roles"
                 }).ConfigureAwait(false);
