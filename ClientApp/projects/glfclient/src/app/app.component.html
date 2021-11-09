@@ -1,2 +1,24 @@
-<h1>GLF MANAGER</h1>
-<app-login></app-login>
+<div class="ui container">
+    <div class="ui secondary menu">
+        <a routerLink="/" class="item"><h3>GLF Manager</h3></a>
+        
+        <div class="right menu">
+            <ng-container *ngIf="signedIn$ | async">
+                <a class="ui item" routerLink="/main" routerLinkActive="active">
+                    Home
+                </a>
+            </ng-container>
+            <ng-container *ngIf="!(signedIn$ | async)">
+                <a
+                    class="ui item"
+                    routerLink="/signin"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    routerLinkActive="active"
+                >
+                    Sign In
+                </a>
+            </ng-container>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

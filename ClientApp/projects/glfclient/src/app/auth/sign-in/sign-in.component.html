@@ -1,0 +1,30 @@
+<h3>Sign In</h3>
+<form (ngSubmit)="onSubmit()" class="ui form" [formGroup]="signInForm">
+    <app-input
+        inputType="text"
+        label="Email"
+        [control]="signInForm.get('email')"
+        [runValidation]="true"
+    ></app-input>
+
+    <app-input
+        inputType="password"
+        label="Password"
+        [control]="signInForm.get('password')"
+        [runValidation]="true"
+    ></app-input>
+
+    <div *ngIf="signInForm.errors" class="ui red basic label">
+        <p *ngIf="signInForm.errors.credentials">
+            Invalid username or password
+        </p>
+    </div>
+
+    <button 
+        [ngClass]="submitting ? 'ui orange loading button' : 'ui orange button'"
+        [disabled]="!signInForm.valid"
+    >
+        Login
+    </button>
+
+</form>

@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Login } from './login';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-
 
 interface LoginResponse {
   accessToken: string;

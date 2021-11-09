@@ -1,7 +1,6 @@
 using GLFManager.App;
 using GLFManager.Auth.Services;
 using GLFManager.Models.Entities;
-using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,11 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GLFManager.Auth
 {
@@ -40,15 +34,6 @@ namespace GLFManager.Auth
                 b => b.MigrationsAssembly("GLFManager.App")
                 )
             );
-
-            services.AddCors(options => 
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder => 
-                    {
-                        builder.WithOrigins("http://localhost:4200");
-                    });
-            });
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -79,9 +64,6 @@ namespace GLFManager.Auth
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseIdentityServer();
-
-            app.UseCors(MyAllowSpecificOrigins);
-
         }
     }
 }
