@@ -34,18 +34,21 @@ export class AuthService {
   ) { }
 
   checkAuth() {
-    console.log('cookie=',this.cookieService.getAll());
+    var cookies=document.cookie;
+    console.log('cookies', cookies);
   }
 
   signIn(credentials: SignInCredentials) {
     credentials.clientId="mobile";
-    
-    return this.http.post<SignInResponse> (`
-      ${this.rootUrl}/login`, 
-      credentials, 
-      { withCredentials: true }
-    ).pipe(
-      tap(() => {
+    return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials)
+    .pipe(
+      tap((response) => {
+        console.log('login response: ', response);
+        if (response.accessToken) {
+          console.log('localstorage if ran');
+          //document.cookie = `${response.accessToken}; SameSite=none; Secure`
+          document.cookie = '=; Max-Age=0;' + location.hostname;
+        }
         this.signedIn$.next(true);
       })
     )
