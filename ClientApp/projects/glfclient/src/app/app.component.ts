@@ -15,6 +15,14 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.authService.checkAuth();
+    this.authService.checkAuth().subscribe((response) => {
+      console.log('auth response=', response);
+    });
+  }
+
+  test() {
+    this.authService.checkAuth().subscribe((response) => {
+      console.log('auth response=', response);
+    });
   }
 }

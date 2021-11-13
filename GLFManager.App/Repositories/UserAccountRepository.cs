@@ -48,7 +48,6 @@ namespace GLFManager.App.Repositories
                     ClientSecret = "UzKjRFnAHffxUFati8HMjSEzwMGgGHmN",
                     Scope = "glfapi.scope roles"
                 }).ConfigureAwait(false);
-
                 if (tokenResponse.IsError)
                     return new LoginResponseViewModel(tokenResponse, user, tokenResponse.Error);
 

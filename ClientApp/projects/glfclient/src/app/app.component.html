@@ -1,7 +1,6 @@
 <div class="ui container">
     <div class="ui secondary menu">
         <a routerLink="/" class="item"><h3>GLF Manager</h3></a>
-        
         <div class="right menu">
             <ng-container *ngIf="signedIn$ | async">
                 <a class="ui item" routerLink="/main" routerLinkActive="active">
@@ -18,6 +17,11 @@
                     Sign In
                 </a>
             </ng-container>
+            <button
+                class="ui item"
+                (click)="test()"
+            > Check Auth
+            </button>
         </div>
     </div>
     <router-outlet></router-outlet>

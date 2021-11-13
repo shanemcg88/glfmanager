@@ -2,6 +2,9 @@
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
 using GLFManager.Models.ViewModels.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -42,8 +45,28 @@ namespace GLFManager.Api.Controllers
             if (tokenStatus.Message != null)
                 return BadRequest(tokenStatus);
 
+            // setTokenCookie(tokenStatus.AccessToken);
             return Ok(tokenStatus);
         }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
+        [HttpGet("auth")]
+        public async Task<ActionResult<UserAuth>> CheckAuth()
+        {
+            UserAuth userAuth = new UserAuth(true, "Authorized");
+            
+            return Ok(userAuth);
+        }
+
+        // private void setTokenCookie(string token)
+        // {
+        //     var cookieOptions = new CookieOptions
+        //     {
+        //         HttpOnly = true,
+        //         Expires = DateTime.UtcNow.AddMinutes(1)
+        //     };
+        //     Response.Cookies.Append("refreshToken", token, cookieOptions);
+        // }
 
     }
 }

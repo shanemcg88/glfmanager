@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CookieService } from 'ngx-cookie-service';
 
 interface SignInCredentials {
   email: string;
@@ -27,27 +26,31 @@ interface SignInResponse {
 export class AuthService {
   rootUrl = 'http://localhost:33000/api/useraccount';
   signedIn$ = new BehaviorSubject<boolean | null>(null);
-
+  bearer: string = '';
+  
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
   ) { }
 
+
   checkAuth() {
-    var cookies=document.cookie;
-    console.log('cookies', cookies);
+    const httpOptions = new HttpHeaders({
+      'Content-Type':  'application/json',
+      Authorization: this.bearer,
+    })
+    return this.http.get(`${this.rootUrl}/auth`, {headers: httpOptions, withCredentials: true});
   }
 
   signIn(credentials: SignInCredentials) {
     credentials.clientId="mobile";
-    return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials)
+    return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials, {withCredentials: true})
     .pipe(
       tap((response) => {
         console.log('login response: ', response);
         if (response.accessToken) {
-          console.log('localstorage if ran');
-          //document.cookie = `${response.accessToken}; SameSite=none; Secure`
-          document.cookie = '=; Max-Age=0;' + location.hostname;
+          console.log('localstorage if ran', response);
+          this.bearer="Bearer "+response.accessToken;
+          // console.log()
         }
         this.signedIn$.next(true);
       })

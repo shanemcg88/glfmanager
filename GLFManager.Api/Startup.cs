@@ -5,9 +5,11 @@ using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.Middleware;
 using GLFManager.Models.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -79,14 +81,22 @@ namespace GLFManager.Api
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                // .AddCookie("Cookies", options => {
+                //     options.Cookie.Name = "TESTNAME";
+                //     options.Cookie.SameSite = SameSiteMode.None;
+                //     options.Cookie.HttpOnly = true;
+                //     options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                //     options.Cookie.IsEssential = true;
+                //     options.SlidingExpiration = true;
+                // })
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = Configuration.GetSection("Identity").GetValue<string>("Authority");
-
                     options.ApiName = "glfapi";
                     options.RequireHttpsMetadata = false;
+                    
                 });
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
