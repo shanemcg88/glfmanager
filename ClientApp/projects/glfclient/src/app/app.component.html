@@ -6,6 +6,9 @@
                 <a class="ui item" routerLink="/main" routerLinkActive="active">
                     Home
                 </a>
+                <button class="ui item" (click)="signOut()">
+                    Sign Out
+                </button>
             </ng-container>
             <ng-container *ngIf="!(signedIn$ | async)">
                 <a
@@ -19,7 +22,7 @@
             </ng-container>
             <button
                 class="ui item"
-                (click)="test()"
+                (click)="checkAuth()"
             > Check Auth
             </button>
         </div>

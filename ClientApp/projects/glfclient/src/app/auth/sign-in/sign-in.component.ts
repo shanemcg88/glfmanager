@@ -25,13 +25,16 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.signInForm.invalid)
+      return;
+      
     this.submitting = true;
 
     return this.authService.signIn(this.signInForm.value).subscribe({
       next: (response) => {
         console.log('response:', response);
         this.submitting = false;
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('main');
       },
       error: ({ error }) => {
         this.signInForm.setErrors({ credentials: true })

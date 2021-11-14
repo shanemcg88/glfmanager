@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 interface SignInCredentials {
   email: string;
@@ -35,18 +36,14 @@ export class AuthService {
   
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
     ) { }
     
   
 
   checkAuth() {
-    var bearer = 'Bearer '+this.cookieService.get('Bearer');
-    const httpOptions = new HttpHeaders({
-      'Content-Type':  'application/json',
-      Authorization: bearer,
-    })
-    return this.http.get<CheckAuthResponse>(`${this.rootUrl}/auth`, { headers: httpOptions, withCredentials: true })
+    return this.http.get<CheckAuthResponse>(`${this.rootUrl}/auth`)
       .pipe(
         tap(({ isAuth }) => {
           this.signedIn$.next(isAuth);
@@ -54,15 +51,22 @@ export class AuthService {
       );
   }
 
+  signOut() {
+    this.cookieService.delete("Bearer");
+    this.signedIn$.next(false);
+    this.router.navigateByUrl("/signin");
+  }
+
   signIn(credentials: SignInCredentials) {
     credentials.clientId="mobile";
-    return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials, {withCredentials: true})
+    
+    return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials)
     .pipe(
       tap((response) => {
         if (response.accessToken) {
           document.cookie=`Bearer=${response.accessToken};max-age=${response.expires};samesite=lax;httponly` + location.hostname;
+          this.signedIn$.next(true);
         }
-        this.signedIn$.next(true);
       })
     )
   }

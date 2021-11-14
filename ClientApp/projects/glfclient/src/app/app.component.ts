@@ -20,9 +20,13 @@ export class AppComponent {
     });
   }
 
-  test() {
+  checkAuth() {
     this.authService.checkAuth().subscribe((response) => {
       console.log('auth response=', response);
     });
+  }
+
+  signOut() {
+    this.authService.signOut();
   }
 }
