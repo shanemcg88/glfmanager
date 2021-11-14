@@ -2,15 +2,14 @@
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
 using GLFManager.Models.ViewModels.User;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace GLFManager.Api.Controllers
@@ -51,22 +50,20 @@ namespace GLFManager.Api.Controllers
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
         [HttpGet("auth")]
-        public async Task<ActionResult<UserAuth>> CheckAuth()
+        public ActionResult<UserAuth> CheckAuth()
         {
-            UserAuth userAuth = new UserAuth(true, "Authorized");
-            
-            return Ok(userAuth);
+            return Ok(new UserAuth(true, "Authorized"));
+            // string bearer = HttpContext.Request.Headers["Cookie"];
+            // Console.WriteLine("BEARER" + bearer);
+            // Console.WriteLine("HttpContext.Request.Cookies = " + HttpContext.Request.Cookies["bearer"]);
+            // if (bearer.Contains("Bearer"))
+            // {
+            //     Console.WriteLine("BEARER NOT NULL = ", bearer);
+            //     return  Ok(new UserAuth(true, "Authorized"));
+            // }
+            // Console.WriteLine("BEARER NULL");
+            // return Unauthorized(new UserAuth(false, "Unauthorized"));
         }
-
-        // private void setTokenCookie(string token)
-        // {
-        //     var cookieOptions = new CookieOptions
-        //     {
-        //         HttpOnly = true,
-        //         Expires = DateTime.UtcNow.AddMinutes(1)
-        //     };
-        //     Response.Cookies.Append("refreshToken", token, cookieOptions);
-        // }
 
     }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 interface SignInCredentials {
   email: string;
@@ -20,25 +21,37 @@ interface SignInResponse {
   message: string | null
 }
 
+interface CheckAuthResponse {
+  isAuth: boolean;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   rootUrl = 'http://localhost:33000/api/useraccount';
   signedIn$ = new BehaviorSubject<boolean | null>(null);
-  bearer: string = '';
   
   constructor(
     private http: HttpClient,
-  ) { }
-
+    private cookieService: CookieService
+    ) { }
+    
+  
 
   checkAuth() {
+    var bearer = 'Bearer '+this.cookieService.get('Bearer');
     const httpOptions = new HttpHeaders({
       'Content-Type':  'application/json',
-      Authorization: this.bearer,
+      Authorization: bearer,
     })
-    return this.http.get(`${this.rootUrl}/auth`, {headers: httpOptions, withCredentials: true});
+    return this.http.get<CheckAuthResponse>(`${this.rootUrl}/auth`, { headers: httpOptions, withCredentials: true })
+      .pipe(
+        tap(({ isAuth }) => {
+          this.signedIn$.next(isAuth);
+        })
+      );
   }
 
   signIn(credentials: SignInCredentials) {
@@ -46,11 +59,8 @@ export class AuthService {
     return this.http.post<SignInResponse> (`${this.rootUrl}/login`, credentials, {withCredentials: true})
     .pipe(
       tap((response) => {
-        console.log('login response: ', response);
         if (response.accessToken) {
-          console.log('localstorage if ran', response);
-          this.bearer="Bearer "+response.accessToken;
-          // console.log()
+          document.cookie=`Bearer=${response.accessToken};max-age=${response.expires};samesite=lax;httponly` + location.hostname;
         }
         this.signedIn$.next(true);
       })
