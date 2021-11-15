@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 
@@ -40,13 +40,21 @@ export class AuthService {
     private router: Router
     ) { }
     
-  
-
   checkAuth() {
+    console.log('checkAuth ran');
     return this.http.get<CheckAuthResponse>(`${this.rootUrl}/auth`)
       .pipe(
         tap(({ isAuth }) => {
           this.signedIn$.next(isAuth);
+        }),
+        catchError(err => {
+          console.log('catcherror ran', err);
+          if (err.status === 401) {
+              this.signedIn$.next(false);
+              this.router.navigateByUrl("signin");
+              return throwError("Unauthorized")
+          }
+          return throwError(err);
         })
       );
   }

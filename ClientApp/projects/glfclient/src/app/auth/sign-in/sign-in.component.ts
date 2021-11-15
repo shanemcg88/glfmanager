@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  submitting = false;
+  submitting = false; // if true, the login button will show loading class
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -31,8 +31,7 @@ export class SignInComponent implements OnInit {
     this.submitting = true;
 
     return this.authService.signIn(this.signInForm.value).subscribe({
-      next: (response) => {
-        console.log('response:', response);
+      next: () => {
         this.submitting = false;
         this.router.navigateByUrl('main');
       },
