@@ -13,6 +13,8 @@ namespace GLFManager.Models.Entities
         {
             FirstName = src.FirstName;
             LastName = src.LastName;
+            Email = src.Email;
+            PhoneNumber = src.PhoneNumber;
             StreetAddress = src.StreetAddress;
             City = src.City;
             Province = src.Province;

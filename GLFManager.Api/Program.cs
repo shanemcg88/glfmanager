@@ -12,6 +12,7 @@ using GLFManager.Models.Entities;
 using GLFManager.App;
 using Microsoft.EntityFrameworkCore;
 using GLFManager.App.Seeds;
+using GLFManager.App.Repositories;
 
 namespace GLFManager.Api
 {
@@ -26,11 +27,19 @@ namespace GLFManager.Api
                 var services = scope.ServiceProvider;
                 try
                 {
+                    // seeding user as administrator
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
-                    Task.Run(async () => await UserAndRoleSeeder.SeedUsersAndRoles(roleManager, userManager)).Wait();
+                    Task.Run(async() => await UserAndRoleSeeder.SeedUsersAndRoles(roleManager, userManager)).Wait();
+
+                    // Seed company data
+                    Task.Run(async() => await PopulateCompaniesSeeder.SeedCompanies(context)).Wait();
+
+                    // Seed employee data
+                    Task.Run(async() => await PopulateEmployeesSeeder.SeedEmployees(context)).Wait();
+
                 }
                 catch (Exception ex)
                 {
