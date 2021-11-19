@@ -15,7 +15,8 @@ namespace GLFManager.App.Seeds
 
             if (allEmployees.Count == 0)
             {
-                List<string> employee1Skills = new List<string>();
+                List<string> employee1Skills = new List<string>(){ "general", "skilled" };
+
                 AddEmployeeViewModel employee1 = new AddEmployeeViewModel()
                 {
                     FirstName = "Shane",

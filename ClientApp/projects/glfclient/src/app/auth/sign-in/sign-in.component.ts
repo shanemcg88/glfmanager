@@ -33,7 +33,7 @@ export class SignInComponent implements OnInit {
     return this.authService.signIn(this.signInForm.value).subscribe({
       next: () => {
         this.submitting = false;
-        this.router.navigateByUrl('main');
+        this.router.navigateByUrl('/');
       },
       error: ({ error }) => {
         this.signInForm.setErrors({ credentials: true })

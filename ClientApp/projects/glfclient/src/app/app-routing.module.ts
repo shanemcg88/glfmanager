@@ -7,10 +7,10 @@ import { SignInPageGuard } from './auth/sign-in-page.guard';
 
 const routes: Routes = [
   {
-    path: 'main',
-    canLoad: [AuthGuard], // not sure if using a guard is necessary as the interceptor takes care of this
+    path: '',
+    //canLoad: [AuthGuard], // not sure if using a guard is necessary as the interceptor takes care of this
     loadChildren: () => import('./main/main.module').then(mod => mod.MainModule)
-  }
+  },
 ];
 
 @NgModule({

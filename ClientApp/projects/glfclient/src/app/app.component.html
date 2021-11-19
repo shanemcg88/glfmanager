@@ -3,12 +3,13 @@
         <a routerLink="/" class="item"><h3>GLF Manager</h3></a>
         <div class="right menu">
             <ng-container *ngIf="signedIn$ | async">
-                <a class="ui item" routerLink="/main" routerLinkActive="active">
-                    Home
-                </a>
-                <button class="ui item" (click)="signOut()">
+                <a class="ui item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+                <a class="ui item" routerLink="/clients" routerLinkActive="active">Clients</a>
+                <a class="ui item" routerLink="/jobs" routerLinkActive="active">Jobs</a>
+                <a class="ui item" routerLink="/employees" routerLinkActive="active">Employees</a>
+                <a class="ui item" (click)="signOut()">
                     Sign Out
-                </button>
+                </a>
             </ng-container>
             <ng-container *ngIf="!(signedIn$ | async)">
                 <a

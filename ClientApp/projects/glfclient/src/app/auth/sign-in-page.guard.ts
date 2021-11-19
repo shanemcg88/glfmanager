@@ -23,7 +23,7 @@ export class SignInPageGuard implements CanActivate {
       take(1),
       map(authenticated => {
         if (authenticated) {
-          this.router.navigateByUrl("main");
+          this.router.navigateByUrl("/");
           return false;
         }
         return true;
