@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DataTableDirective, DataTablesModule } from 'angular-datatables';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClientsService } from './clients.service';
-import { Subject } from 'rxjs';
+import { Client } from './client';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-clients',
@@ -10,13 +13,48 @@ import { Subject } from 'rxjs';
 })
 export class ClientsComponent implements OnInit {
 
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject<any>();
+  pagination: boolean = false; // for when pagination doesn't initialize until the data is loaded
+  displayedColumns: string[] = ['name', 'address', 'officeEmail', 'officePhone'];
+  dataSource = new MatTableDataSource<Client>();
+  searchInput: string = '';
+  clients: Client[]=[];
 
-  constructor(private clientService: ClientsService) { }
-
-  ngOnInit(): void {
-    this.clientService.getClients().subscribe((response) => {console.log('clientresponse', response)})
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(val: MatPaginator) {
+    if (this.pagination) {
+      this.dataSource.paginator = val;
+    }
   }
 
+  @ViewChild(MatSort, { static: false }) set matSort(val: MatSort) {
+    this.dataSource.sort = val;
+  }
+
+  constructor(
+    private clientService: ClientsService,
+    private liveAnnouncer: LiveAnnouncer
+  ) {}
+
+  ngOnInit(): void {
+    this.clientService.getClients().subscribe((response) => {
+      this.dataSource.data=response;
+      this.clients=response;
+      this.pagination = true;
+    })
+    this.dataSource.filterPredicate = (data: Client, filter: string) => {
+      return data.name.toLowerCase().includes(filter.toLowerCase());
+     };
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this.liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  searchField(userInput: string) {
+    console.log('userinput=', userInput);
+    this.dataSource.filter=userInput;
+  }
 }
