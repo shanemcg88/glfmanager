@@ -1,7 +1,18 @@
 <div class="ui container">
-    <div class="ui secondary menu">
-        <a routerLink="/" class="item"><h3>GLF Manager</h3></a>
-        <div class="right menu">
+    <a routerLink="/" class="item"><h3>GLF Manager</h3></a>
+    <!-- <ng-container *ngIf="!(signedIn$ | async)">
+        <a
+        class="ui item "
+        routerLink="/signin"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="active"
+        >
+        Sign In
+    </a>
+    </ng-container> -->
+    <!-- <div class="ui secondary menu"> -->
+    <div class="ui grid">
+        <div *ngIf="signedIn$ | async" class="ui secondary vertical menu">             
             <ng-container *ngIf="signedIn$ | async">
                 <a class="ui item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
                 <a class="ui item" routerLink="/clients" routerLinkActive="active">Clients</a>
@@ -11,22 +22,20 @@
                     Sign Out
                 </a>
             </ng-container>
-            <ng-container *ngIf="!(signedIn$ | async)">
-                <a
-                    class="ui item"
-                    routerLink="/signin"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    routerLinkActive="active"
-                >
-                    Sign In
-                </a>
-            </ng-container>
             <!-- <button
                 class="ui item"
                 (click)="checkAuth()"
-            > Check Auth
+                > Check Auth
             </button> -->
         </div>
+        <div class="twelve wide stretched column test">
+            <div class="ui segment">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
     </div>
-    <router-outlet></router-outlet>
+    <!-- </div> -->
+        <!-- <div class="twelve wide stretched column"> -->
+        <!-- </div> -->
+
 </div>

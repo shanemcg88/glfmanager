@@ -36,20 +36,30 @@ namespace GLFManager.App.Repositories
             return jobsToView;
         }
 
-        public async Task<IReadOnlyList<JobsViewModel>> RetrieveAllJobs()
+        public async Task<List<Jobs>> GetAllJobs()
         {
-            List<JobsViewModel> jobList = new List<JobsViewModel>();
-            List<Jobs> jobFromDb = await _context.Jobs
+
+            //List<Jobs> jobs = await _entityDbSet.Where(j => j.IsJobComplete == false && j.DateOfJob == DateTime.Today).ToListAsync();
+            //var test = await _context.Jobs
+            //    .Include(x => x.Company)
+            //    .ThenInclude(x => x.Name)
+
+            //return jobs;
+
+            //List<JobsViewModel> jobList = new List<JobsViewModel>();
+            List<Jobs> jobsFromDb = await _context.Jobs
+                .Include(x => x.Company)
                 .Include(x => x.JobsEmployees)
                 .ThenInclude(y => y.Employee)
                 .ToListAsync();
+            return jobsFromDb;
+            //foreach(var job in jobFromDb)
+            //{
 
-            foreach(var job in jobFromDb)
-            {
-                jobList.Add(_mapper.Map<Jobs, JobsViewModel>(job));
-            }
+            //    jobList.Add(_mapper.Map<Jobs, JobsViewModel>(job));
+            //}
 
-            return jobList;
+            //return jobList;
         }
 
         public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)

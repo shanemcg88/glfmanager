@@ -9,16 +9,16 @@ services:
   #     - "3050:80"
   #   restart: always
 
-  client:
-    image: angulardocker
-    build:
-      context: ./ClientApp
-      dockerfile: Dockerfile
-    container_name: "glf_ui_container"
-    ports: 
-      - "4200:4200"
-    volumes:
-      - "./ClientApp:/frontend"
+  # client:
+  #   image: angulardocker
+  #   build:
+  #     context: ./ClientApp
+  #     dockerfile: dockerfolder/Dockerfile
+  #   container_name: "glf_ui_container"
+  #   ports: 
+  #     - "4200:4200"
+  #   volumes:
+  #     - "./ClientApp:/frontend"
 
   glfmanager.api:
     image: ${DOCKER_REGISTRY-}glfmanager.api

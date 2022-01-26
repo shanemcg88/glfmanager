@@ -1,1 +1,16 @@
-<p>employees works!</p>
+<div>
+    <h1>Employees</h1>
+    <div mat-dialog-content>
+        <input
+            matInput
+            #userInput
+            type="text"
+            (change)="searchField(userInput.value)"/>
+    </div>
+    <custom-table 
+        [tableData]="employees"
+        [tableColumns]="employeeTableColumns"
+        [isPageable]="true"
+    >
+    </custom-table>
+</div>

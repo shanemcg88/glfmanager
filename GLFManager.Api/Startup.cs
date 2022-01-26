@@ -3,6 +3,7 @@ using GLFManager.Api.Helpers;
 using GLFManager.App;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
+using GLFManager.App.Services.JobServices;
 using GLFManager.Middleware;
 using GLFManager.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -110,6 +111,7 @@ namespace GLFManager.Api
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IJobsRepository, JobsRepository>();
+            services.AddTransient<IJobService, JobService>();
 
         }
 
@@ -128,7 +130,7 @@ namespace GLFManager.Api
                 //     RequestPath = new PathString("/ClientApp/dist")
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

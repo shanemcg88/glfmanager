@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
+using GLFManager.App.Services.JobServices;
 using GLFManager.Models.Dtos;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Jobs;
@@ -19,10 +20,12 @@ namespace GLFManager.Api.Controllers
     public class JobController : ControllerBase
     {
         private readonly IJobsRepository _jobsRepository;
+        internal readonly IJobService _jobService;
 
-        public JobController(IJobsRepository jobsReposistory)
+        public JobController(IJobsRepository jobsReposistory, IJobService jobService)
         {
             _jobsRepository = jobsReposistory;
+            _jobService = jobService;
         }
 
         [HttpPost("createjob")]
@@ -46,7 +49,7 @@ namespace GLFManager.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<JobsViewModel>>> GetAllJobs()
         {
-            var allJobs = await _jobsRepository.RetrieveAllJobs();
+            var allJobs = await _jobsRepository.GetAllJobs();
 
             if (allJobs.Count == 0)
                 return NotFound("No jobs found");
@@ -58,6 +61,16 @@ namespace GLFManager.Api.Controllers
         public async Task<ActionResult<JobsViewModel>> ModifyJob(EditJob editJob)
         {
             var result = await _jobsRepository.EditJob(editJob);
+
+            return Ok(result);
+        }
+
+        [HttpGet("dailyjobs")]
+        public async Task<ActionResult<List<JobsDto>>> GetTodaysJobs()
+        {
+            var result = await _jobService.DailyJobs();
+            if (result.Count == 0)
+                throw new Exception("No jobs found");
 
             return Ok(result);
         }

@@ -9,12 +9,12 @@ import { AuthModule } from './auth/auth.module';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { LoginModule } from './login/login.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,
     AuthModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
+    // LoginModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }

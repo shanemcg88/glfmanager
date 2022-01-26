@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using GLFManager.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace GLFManager.App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220126043231_AddedIsCompletedToJobs")]
+    partial class AddedIsCompletedToJobs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,6 +95,9 @@ namespace GLFManager.App.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("JobsId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
@@ -112,6 +117,8 @@ namespace GLFManager.App.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobsId");
 
                     b.ToTable("Employees");
                 });
@@ -363,6 +370,13 @@ namespace GLFManager.App.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("GLFManager.Models.Entities.Employee", b =>
+                {
+                    b.HasOne("GLFManager.Models.Entities.Jobs", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("JobsId");
                 });
 
             modelBuilder.Entity("GLFManager.Models.Entities.Jobs", b =>

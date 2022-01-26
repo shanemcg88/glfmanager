@@ -63,13 +63,21 @@
             Search
         </button>   
     </div>
-    <table 
+    <custom-table 
+
+        [tableData]="clients"
+        [tableColumns]="clientsTableColumns"
+        [isPageable]="true"
+    >
+    </custom-table>
+    
+    <!-- <table 
         mat-table [dataSource]="dataSource" 
         class="mat-elevation-z8"
         matSort
         (matSortChange)="announceSortChange($event)"
     >
-        <!-- Name Column -->
+         Name Column
         <ng-container matColumnDef="name">
             <th 
                 mat-header-cell 
@@ -82,7 +90,7 @@
             <td mat-cell *matCellDef="let client">{{ client.name }}</td>
         </ng-container>
 
-        <!-- Address Column -->
+        Address Column 
         <ng-container matColumnDef="address">
             <th 
                 mat-header-cell 
@@ -95,7 +103,7 @@
             <td mat-cell *matCellDef="let client">{{ client.address }}</td>
         </ng-container>
 
-        <!-- Office Email Column -->
+        Office Email Column 
         <ng-container matColumnDef="officeEmail">
             <th 
                 mat-header-cell 
@@ -108,7 +116,7 @@
             <td mat-cell *matCellDef="let client">{{ client.officeEmail }}</td>
         </ng-container>
 
-        <!-- Office Phone Column -->
+         Office Phone Column 
         <ng-container matColumnDef="officePhone">
             <th mat-header-cell *matHeaderCellDef>Phone</th>
             <td mat-cell *matCellDef="let client">{{ client.officePhone }}</td>
@@ -123,5 +131,5 @@
         [pageSizeOptions]="[5, 10, 20]" 
         showFirstLastButtons
         aria-label="Select page of clients"
-    ></mat-paginator>
+    ></mat-paginator> -->
 </div>

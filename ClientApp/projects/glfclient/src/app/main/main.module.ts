@@ -8,6 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from '../shared/shared.module';
 
 import { MainRoutingModule } from './main-routing.module';
 import { HomeComponent } from './home/home.component';
@@ -33,7 +34,8 @@ import { EmployeesComponent } from './employees/employees.component';
     MatSortModule,
     MatButtonModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    SharedModule
   ]
 })
 export class MainModule { }

@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20210808221737_RESETTINGJOBTABLE.Designer.cs" />
     <Compile Remove="Migrations\20210809030613_test.cs" />
     <Compile Remove="Migrations\20210809030613_test.Designer.cs" />
+    <Compile Remove="Migrations\20220126050251_AdjustedJobsEmployeesJobEntity.cs" />
+    <Compile Remove="Migrations\20220126050251_AdjustedJobsEmployeesJobEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

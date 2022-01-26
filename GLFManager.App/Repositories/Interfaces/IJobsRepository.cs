@@ -13,6 +13,6 @@ namespace GLFManager.App.Repositories.Interfaces
         Task<JobsViewModel> GetJobById(Guid jobId);
         Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob);
         Task<JobsViewModel> EditJob(EditJob editJob);
-        Task<IReadOnlyList<JobsViewModel>> RetrieveAllJobs();
+        Task<List<Jobs>> GetAllJobs();
     }
 }

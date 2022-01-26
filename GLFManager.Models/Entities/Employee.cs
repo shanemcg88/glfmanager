@@ -37,6 +37,6 @@ namespace GLFManager.Models.Entities
 
         //public ICollection<Jobs> Jobs { get; set; }
         //public ICollection<JobsEmployee> JobsEmployees { get; set; }
-        public ICollection<JobsEmployee> JobsEmployees { get; set; }
+        public virtual ICollection<JobsEmployee> JobsEmployees { get; set; }
     }
 }

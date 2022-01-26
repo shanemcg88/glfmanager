@@ -15,7 +15,8 @@ namespace GLFManager.Models.ViewModels.Jobs
         public string PhoneNumber { get; set; }
         public int NumberOfPositions { get; set; }
         public List<string> Positions { get; set; }
-        public Guid CompanyId { get; set; }
+        //public Guid CompanyId { get; set; }
+        public Company Company { get; set; }
         public List<EmployeeViewModel> EmployeeList { get; set; }
     }
 }

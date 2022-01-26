@@ -18,6 +18,8 @@ namespace GLFManager.Models.Entities
             NumberOfPositions = src.NumberOfPositions;
             Positions = src.Positions;
             CompanyId = src.CompanyId;
+            IsJobComplete = false;
+            DateOfJob = src.DateOfJob.ToUniversalTime();
             //EmployeeIds = src.Employees;
             //JobsEmployees = src.JobsEmployees;
         }
@@ -28,13 +30,14 @@ namespace GLFManager.Models.Entities
         public string PhoneNumber { get; set; }
         public int NumberOfPositions { get; set; }
         public List<string> Positions { get; set; }
+        public bool IsJobComplete { get; set; }
         //public List<Guid> EmployeeIds { get; set; }
-
         public Guid CompanyId { get; set; }
         public Company Company { get; set; }
 
         //public ICollection<JobsEmployee> JobsEmployees { get; set; } = new List<JobsEmployee>();
         public virtual ICollection<JobsEmployee> JobsEmployees { get; set; }
+        //public virtual ICollection<Employee> Employees { get; set; }
 
     }
 }

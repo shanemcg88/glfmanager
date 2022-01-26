@@ -1,0 +1,29 @@
+body {
+    height: 100%;
+}
+
+.container {
+    width: 90%;
+    /* margin-top: 30px; */
+    height: 100%;
+}
+
+.grid {
+    margin-top: 20px;
+    height: 90%;
+}
+
+.ui.grid > .column:not(.row) {
+    padding-top: 0;
+}
+
+.ui.secondary.menu {
+    border-right: 1px solid rgba(34, 36, 38, 0.15)
+}
+
+.ui.segment {
+    border: none;
+    box-shadow: none;
+}
+
+
