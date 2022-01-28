@@ -17,8 +17,8 @@ namespace GLFManager.Models.Dtos
         public int NumberOfPositions { get; set; }
         public List<string> Positions { get; set; }
         public bool IsJobComplete { get; set; }
-        //public string CompanyName { get; set; }
-        public CompanyViewModel Company { get; set; }
-        public List<EmployeeViewModel> EmployeeList { get; set; }
+        public string CompanyName { get; set; }
+        //public CompanyViewModel Company { get; set; }
+        public List<string> EmployeeList { get; set; }
     }
 }

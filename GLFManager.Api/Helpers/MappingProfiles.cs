@@ -20,9 +20,15 @@ namespace GLFManager.Api.Helpers
                 .ForMember(dest => dest.EmployeeList, opt => opt.MapFrom(j => j.JobsEmployees.Select(je => new EmployeeViewModel(je.Employee)).ToList()));
 
             CreateMap<Jobs, JobsDto>()
-                .ForMember(dest => dest.EmployeeList, opt => opt.MapFrom(j => j.JobsEmployees.Select(je => new EmployeeViewModel(je.Employee)).ToList()))
-                //.ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
-                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => new CompanyViewModel(src.Company)));
+                .ForMember(dest => dest.EmployeeList, opt => opt
+                    .MapFrom(j => j.JobsEmployees
+                        .Select(je =>EmployeeFullName(je.Employee.FirstName, je.Employee.LastName))));
         }
+
+        private string EmployeeFullName(string firstName, string lastName)
+        {
+            return firstName + " " + lastName;
+        }
+
     }
 }
