@@ -76,6 +76,7 @@
             <!-- column data -->
             <td mat-cell *matCellDef="let element" [class.text-right]="tableColumn.position == 'right'">
                 {{ element | dataPropertyGetter: tableColumn.dataKey}}
+                {{ element | dataType:tableColumn.dataKey}}
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

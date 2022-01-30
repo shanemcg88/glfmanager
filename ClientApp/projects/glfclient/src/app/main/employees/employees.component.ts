@@ -46,7 +46,7 @@ export class EmployeesComponent implements OnInit {
         name: 'Phone Number',
         dataKey: 'phoneNumber'
       }
-    ]
+    ];
   }
     
     announceSortChange(sortState: Sort) {

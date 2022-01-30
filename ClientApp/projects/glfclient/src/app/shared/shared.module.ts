@@ -10,13 +10,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DataPropertyGetterPipe } from './table/data-property-getter-pipe/data-property-getter.pipe';
+import { DataTypePipe } from './table/table-pipes/data-type.pipe'
+
 
 
 @NgModule({
   declarations: [
     InputComponent,
     TableComponent,
-    DataPropertyGetterPipe
+    DataPropertyGetterPipe,
+    DataTypePipe
   ],
   imports: [
     CommonModule,

@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Employee } from './employee';
+import { Job } from './job';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeesService {
+export class JobsService {
   rootUrl = '';
   constructor(private http: HttpClient) {
-    this.rootUrl = environment.apiUrl + '/employee';
+    this.rootUrl = environment.apiUrl + '/job/dailyjobs'
   }
 
-  getEmployees() {
-    return this.http.get<Employee[]>(`${this.rootUrl}`);
+  getDailyJobs() {
+    return this.http.get<Job[]>(`${this.rootUrl}`);
   }
 }
