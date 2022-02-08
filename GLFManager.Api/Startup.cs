@@ -4,6 +4,7 @@ using GLFManager.App;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.App.Services.JobServices;
+using GLFManager.App.Services.UserServices;
 using GLFManager.Middleware;
 using GLFManager.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,7 +45,7 @@ namespace GLFManager.Api
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder => 
                     {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -84,14 +85,6 @@ namespace GLFManager.Api
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                // .AddCookie("Cookies", options => {
-                //     options.Cookie.Name = "TESTNAME";
-                //     options.Cookie.SameSite = SameSiteMode.None;
-                //     options.Cookie.HttpOnly = true;
-                //     options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-                //     options.Cookie.IsEssential = true;
-                //     options.SlidingExpiration = true;
-                // })
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = Configuration.GetSection("Identity").GetValue<string>("Authority");
@@ -112,6 +105,7 @@ namespace GLFManager.Api
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IJobsRepository, JobsRepository>();
             services.AddTransient<IJobService, JobService>();
+            services.AddTransient<IUserService, UserService>();
 
         }
 

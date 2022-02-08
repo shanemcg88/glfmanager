@@ -38,31 +38,9 @@ namespace GLFManager.App.Services.JobServices
             var filteredJobs = jobs.FindAll(j => j.IsJobComplete == false && j.DateOfJob.Day == DateTime.UtcNow.Day);
 
             List<JobsDto> jobsDto = new List<JobsDto>();
-            //var mappedJobsDto = _mapper.Map(filteredJobs, jobsDto)
-            
+            var dailyJobs = _mapper.Map<List<JobsDto>>(filteredJobs);
 
-            var testDto = _mapper.Map<List<JobsDto>>(filteredJobs);
-
-            //foreach (var job in filteredJobs)
-            //{
-            //    var mapped = _mapper.Map<Jobs, JobsDto>(job);
-            //    jobsDto.Add(mapped);
-            //}
-            //foreach (Jobs job in filteredJobs)
-            //{
-            //    var jobDto = new JobsDto() {
-            //        JobId = job.Id,
-            //        Company = job.Company,
-            //        DateOfJob = job.DateOfJob,
-            //        NumberOfPositions = job.NumberOfPositions,
-            //        Positions = job.Positions,
-            //        EmployeesList = job.JobsEmployees
-            //    };
-
-            //    jobsDto.Add(jobDto);
-            //}
-
-            return testDto;
+            return dailyJobs;
         }
     }
 }

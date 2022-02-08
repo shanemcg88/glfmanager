@@ -52,6 +52,10 @@ export class JobsComponent implements OnInit {
         dataKey: 'companyName'
       },
       {
+        name: 'Site Address',
+        dataKey: 'address'
+      },
+      {
         name: 'Contact',
         dataKey: 'contact'
       },

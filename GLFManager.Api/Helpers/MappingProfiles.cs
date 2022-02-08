@@ -22,12 +22,18 @@ namespace GLFManager.Api.Helpers
             CreateMap<Jobs, JobsDto>()
                 .ForMember(dest => dest.EmployeeList, opt => opt
                     .MapFrom(j => j.JobsEmployees
-                        .Select(je =>EmployeeFullName(je.Employee.FirstName, je.Employee.LastName))));
+                        .Select(je =>EmployeeFullName(je.Employee.Id, je.Employee.FirstName, je.Employee.LastName))));
         }
 
-        private string EmployeeFullName(string firstName, string lastName)
+        private EmployeeFirstLastIDVM EmployeeFullName(Guid empId, string firstName, string lastName)
         {
-            return firstName + " " + lastName;
+            var employee = new EmployeeFirstLastIDVM() {
+                EmpId = empId,
+                FirstName = firstName,
+                LastName = lastName
+            };
+
+            return employee;
         }
 
     }

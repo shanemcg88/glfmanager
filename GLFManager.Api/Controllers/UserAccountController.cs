@@ -2,6 +2,10 @@
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Account;
 using GLFManager.Models.ViewModels.User;
+using GLFManager.App.Services.UserServices;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,13 +26,20 @@ namespace GLFManager.Api.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly App.Repositories.Interfaces.IUserAccountRepository _userRepository;
-
-        public UserAccountController(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager, IUserAccountRepository userRepository)
+        private readonly IUserService _userService;
+        public UserAccountController(
+            SignInManager<User> signInManager, 
+            IConfiguration configuration, 
+            UserManager<User> userManager, 
+            IUserAccountRepository userRepository,
+            IUserService userService
+        )
         {
             _signInManager = signInManager;
             _configuration = configuration;
             _userManager = userManager;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -37,33 +48,41 @@ namespace GLFManager.Api.Controllers
             var signInResult = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, true).ConfigureAwait(false);
 
             if (!signInResult.Succeeded)
-                return BadRequest("Invalid username/password");
+                return Unauthorized("Invalid username/password");
 
-            var retrievedUser = await _userRepository.GetUserByEmail(login.Email);
-            var tokenStatus = await _userRepository.GetLoginTokenFromIdServer(login, new UserViewModel(retrievedUser));
-            if (tokenStatus.Message != null)
-                return BadRequest(tokenStatus);
+            var userResult = await _userService.loginCredentials(login);
+            if (userResult.Message != null)
+                return BadRequest(userResult.Message);
 
-            // setTokenCookie(tokenStatus.AccessToken);
-            return Ok(tokenStatus);
+            return Ok(userResult);
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "administrator")]
         [HttpGet("auth")]
         public ActionResult<UserAuth> CheckAuth()
         {
-            return Ok(new UserAuth(true, "Authorized"));
-            // string bearer = HttpContext.Request.Headers["Cookie"];
-            // Console.WriteLine("BEARER" + bearer);
-            // Console.WriteLine("HttpContext.Request.Cookies = " + HttpContext.Request.Cookies["bearer"]);
-            // if (bearer.Contains("Bearer"))
-            // {
-            //     Console.WriteLine("BEARER NOT NULL = ", bearer);
-            //     return  Ok(new UserAuth(true, "Authorized"));
-            // }
-            // Console.WriteLine("BEARER NULL");
-            // return Unauthorized(new UserAuth(false, "Unauthorized"));
+            var user = HttpContext.User;
+            if (user.Identity.IsAuthenticated)
+            {
+                return Ok(new UserAuth(true, "Authorized"));
+            }
+
+            return Unauthorized();
         }
+
+        [Authorize]
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var user = HttpContext.User;
+            if (user?.Identity?.IsAuthenticated == true)
+            {
+                await _signInManager.SignOutAsync();
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
 
     }
 }

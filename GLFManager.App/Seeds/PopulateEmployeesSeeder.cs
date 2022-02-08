@@ -3,6 +3,7 @@ using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Employees;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace GLFManager.App.Seeds
 {
@@ -17,8 +18,8 @@ namespace GLFManager.App.Seeds
             {
                 List<string> employee1Skills = new List<string>(){ "general", "skilled" };
 
-                AddEmployeeViewModel employee1 = new AddEmployeeViewModel()
-                {
+                Employee employee = new Employee() {
+                    Id = new Guid("ad83ec5b-e93f-4695-9c26-f0e9a158833a"),
                     FirstName = "Shane",
                     LastName = "McGuire",
                     Email = "shnmcguire@gmail.com",
@@ -31,7 +32,7 @@ namespace GLFManager.App.Seeds
                     Skills = employee1Skills
                 };
 
-                await employeeRepo.Create(new Employee(employee1));
+                await employeeRepo.Create(employee);
             }
         }
     }
