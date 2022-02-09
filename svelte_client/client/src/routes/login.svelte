@@ -42,6 +42,8 @@
                     loginError = 'Invalid login credentials';
                 else 
                     loginError = 'Something went wrong. Please try again or contact support';
+
+                disabled=false;
             }
         } catch (err) {
             loginError = 'Something went wrong. Please try again or contact support';
@@ -49,26 +51,66 @@
     }
 </script>
 
-<h1>Login</h1>
-<form on:submit|preventDefault={loginSubmit}>
-    <input 
-        type="text" 
-        bind:value={userName}
-        on:input={() => userName}
-    />
-    <input
-        type="password"
-        bind:value={password}
-        on:input={() => password}
-    />
+<div class="text-center">
+    <div class="loginContainer">
+        <form 
+            class="loginForm"
+            on:submit|preventDefault={loginSubmit}
+        >
+            <h1 class="h3 mb-3 fw-normal">
+                GLF Manager
+            </h1>
+            
+            <div class="form-floating">
+                <input
+                    class="form-control"
+                    id="floatingInput"
+                    type="text" 
+                    bind:value={userName}
+                    on:input={() => userName}
+                />
+                <label for="floatingInput">Email Address</label>
+            </div>
 
-    <button 
-        type="submit"
-        {disabled}
-    >
-        Login
-    </button>
-    {#if isError}
-        <p>{loginError}</p>
-    {/if}
-</form>
+            <div class="form-floating mt-2">
+                <input
+                    class="form-control"
+                    id="floatingPassword"
+                    type="password"
+                    bind:value={password}
+                    on:input={() => password}
+                />
+                <label for="floatingPassword">Password</label>
+            </div>
+            
+            <button
+                class="w-100 btn btn-lg btn-primary mt-2"
+                type="submit"
+                {disabled}
+            >
+                Login
+            </button>
+            {#if isError}
+                <p>{loginError}</p>
+            {/if}
+        </form>
+    </div>
+</div>
+
+<style>
+    .loginContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: 95vh;
+        align-content: space-around;
+        -webkit-align-content: space-around; 
+    }
+
+    .loginForm {
+        min-width: 200px;
+        width: 50%;
+        max-width: 500px;
+    }
+</style>

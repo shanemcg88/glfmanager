@@ -2,6 +2,9 @@
 import { goto } from "$app/navigation";
 import { onMount } from "svelte";
 import { signedIn } from "../auth";
+import TopNavBar from "../components/navbar/TopNavBar.svelte";
+import SideBarNav from "../components/navbar/SideNavBar.svelte";
+import SideNavBar from "../components/navbar/SideNavBar.svelte";
 
 let rootUrl = import.meta.env.VITE_ROOTURL;
 let isSignedIn
@@ -15,10 +18,13 @@ onMount(async () => {
             credentials: 'include',
         })
 
-    if (response.ok)
+    if (response.ok) {
         signedIn.update((value) => value = true);
-    else
+    }
+    else {
         signedIn.update(value => value = false);
+        goto('/login')
+    }
 })
 
 const signOut = async () => {
@@ -30,6 +36,7 @@ const signOut = async () => {
 
     if (response.ok) {
         signedIn.update(value => value = false);
+        goto('/login');
     } else {
         throw new Error("Something went wrong logging out");
     }
@@ -40,15 +47,7 @@ const signOut = async () => {
     <title>GLF Manager</title>
 </svelte:head>
 
-<main>
-    <h1>GLF Manager</h1>
-</main>
-<nav>
-    {#if isSignedIn}
-        <button type="button" on:click={signOut}>Logout</button>
-    {:else}
-        <button type="button" on:click={()=>goto('/login')}>Login</button>
-    {/if}
-
-
-</nav>
+<TopNavBar />
+<SideNavBar />
+<div>
+</div>
