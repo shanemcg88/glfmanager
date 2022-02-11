@@ -1,4 +1,8 @@
+<script>
 
+
+    let active = 'active';
+</script>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="sideNav">
     <ul class="nav nav-pills flex-column mb-auto">

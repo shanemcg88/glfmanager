@@ -49,8 +49,8 @@
             loginError = 'Something went wrong. Please try again or contact support';
         }
     }
-</script>
 
+</script>
 <div class="text-center">
     <div class="loginContainer">
         <form 

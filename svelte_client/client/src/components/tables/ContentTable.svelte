@@ -1,0 +1,27 @@
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>test</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>test</td>
+        </tr>
+        <tr>
+            <td>test</td>
+        </tr>
+    </tbody>
+</table>
