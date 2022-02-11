@@ -50,7 +50,15 @@
         }
     }
 
+    // disabling user from pressing back on the login page and returning to the main page
+    function beforeunload(event) {
+        event.preventDefault();
+        return event.returnValue = '';
+    }
+
 </script>
+<svelte:window on:beforeunload={beforeunload}/>
+
 <div class="text-center">
     <div class="loginContainer">
         <form 

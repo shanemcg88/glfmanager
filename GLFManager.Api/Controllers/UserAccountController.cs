@@ -69,18 +69,11 @@ namespace GLFManager.Api.Controllers
             return Unauthorized();
         }
 
-        [Authorize]
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
-            var user = HttpContext.User;
-            if (user?.Identity?.IsAuthenticated == true)
-            {
-                await _signInManager.SignOutAsync();
-                return Ok();
-            }
-
-            return BadRequest();
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
 
 
