@@ -49,7 +49,6 @@ namespace GLFManager.Api
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
-                        
                     });
             });
 

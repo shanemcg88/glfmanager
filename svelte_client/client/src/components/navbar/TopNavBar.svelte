@@ -20,7 +20,7 @@
   }
 </script>
 
-<ul class="nav">
+<ul class="col nav">
     <li class="nav-item">
       <h3 class="navbar-brand">GLF Manager</h3>
     </li>

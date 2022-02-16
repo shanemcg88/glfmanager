@@ -1,3 +1,3 @@
-import { writable } from "svelte/store";
+import { readable, writable } from "svelte/store";
 
-// export const LoggedIn
+export const ROOT_URL = readable(import.meta.env.VITE_ROOTURL)

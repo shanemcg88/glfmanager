@@ -1,6 +1,13 @@
 <script>
     import ContentTable from "../components/tables/ContentTable.svelte";
-</script>
 
-<h1>Jobs</h1>
-<ContentTable />
+    
+</script>
+<div class="jobsContainer">
+    <h1>Jobs</h1>
+    <ContentTable />
+
+</div>
+
+<style>
+</style>

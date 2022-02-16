@@ -20,7 +20,6 @@
 
     async function loginSubmit() {
         disabled = true;
-        try {
             const response = await fetch(`${rootUrl}/useraccount/login`, {
                 method: 'POST',
                 mode: 'cors', 
@@ -33,21 +32,21 @@
                     password,
                     clientId: "mobile"
                 })
-            })
-            if (response.ok) {
-                signedIn.update(x => x = true);
-                goto(`/`, {replaceState:true})
-            } else {
-                if (response.status === 401)
-                    loginError = 'Invalid login credentials';
-                else 
-                    loginError = 'Something went wrong. Please try again or contact support';
-
-                disabled=false;
-            }
-        } catch (err) {
-            loginError = 'Something went wrong. Please try again or contact support';
-        }
+            }).then(response => {
+                if (response.ok) {
+                    signedIn.update(x => x = true);
+                    goto(`/`, {replaceState:true})
+                    return response.json();
+                } else {
+                    if (response.status === 401)
+                        loginError = 'Invalid login credentials';
+                    else 
+                        loginError = 'Something went wrong. Please try again or contact support';
+                    
+                    // resetting login button
+                    disabled=false;
+                }
+            }).catch(() =>loginError = 'Something went wrong. Please try again or contact support')
     }
 
     // disabling user from pressing back on the login page and returning to the main page
