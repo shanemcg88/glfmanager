@@ -38,6 +38,7 @@ let userAuth = async () => {
            return res.json();
 
     }).then((res)=>{
+        console.log('authrefreshres', res);
         if (res.IsAuth)
             signedIn.update((value) => value = true)
     }).catch(() => {

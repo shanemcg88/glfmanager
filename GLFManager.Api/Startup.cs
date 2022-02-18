@@ -124,15 +124,15 @@ namespace GLFManager.Api
             });
 
             //app.UseHttpsRedirection();
-
-            app.UseRouting();
-
             app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseMiddleware<GlobalExceptionHandler>();
-
             app.UseAuthentication();
+
+            app.UseRouting();
+            
             app.UseAuthorization();
+
+            app.UseMiddleware<GlobalExceptionHandler>();
 
             app.UseEndpoints(endpoints =>
             {

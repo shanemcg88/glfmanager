@@ -1,28 +1,18 @@
 <script>
-    import { ROOT_URL } from '../stores'
+    import { goto } from '$app/navigation';
+    import { getEmployees } from '../shared/fetch.svelte';
+
+    import { ROOT_URL } from '../stores';
 
     let employees;
     let rootUrl;
+    //let bearer = localStorage.getItem('accessToken');
+
     ROOT_URL.subscribe(value => rootUrl = value);
 
-    $: console.log('employees=', employees);
-
-    async function getEmployees() {
-        console.log('getemployees ran');
-        await fetch(`${rootUrl}/employee`, {
-            method: 'GET',
-            mode: 'cors', 
-            credentials: 'include',
-            
-        }).then(res => {
-            console.log('res', res);
-            if (res.ok)
-                return res.json();
-
-        }).then((emp) => employees = emp)
-
-          .catch((err) => console.log('ERRORHAPPENED IN EMPLOYEES', err));
-    }
+    getEmployees()
+        .then((emp) => employees = emp)
+        .catch((err) => console.log('ERRORHAPPENED IN EMPLOYEES', err));
 
 </script>
 

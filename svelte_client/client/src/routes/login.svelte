@@ -1,51 +1,43 @@
 <script>
     import { signedIn } from '../auth';
     import { goto } from '$app/navigation';
+    import { loginFetch } from '../shared/fetch.svelte';
 
-    let rootUrl = import.meta.env.VITE_ROOTURL;
     let userName = 'shanelgmcguire@gmail.com';
     let password = 'Password1';
     let disabled = true;
     let loginError = '';
-    let isError = false;
+    let isError = false;    
 
-    $: if (loginError.length > 0) {
+    $: if (loginError.length > 0)
         isError = true;
-    }
 
     $: if (userName.length > 0 && password.length > 0)
             disabled = false;
         else 
             disabled = true;
 
-    async function loginSubmit() {
+    function loginSubmit() {
+        // disabling login button
         disabled = true;
-            const response = await fetch(`${rootUrl}/useraccount/login`, {
-                method: 'POST',
-                mode: 'cors', 
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: userName,
-                    password,
-                    clientId: "mobile"
-                })
-            }).then(response => {
+        
+        loginFetch(userName, password)
+            .then(response => {
                 if (response.ok) {
-                    signedIn.update(x => x = true);
-                    goto(`/`, {replaceState:true})
                     return response.json();
                 } else {
-                    if (response.status === 401)
-                        loginError = 'Invalid login credentials';
-                    else 
-                        loginError = 'Something went wrong. Please try again or contact support';
-                    
-                    // resetting login button
-                    disabled=false;
+                    response.status === 401 ? 
+                        loginError = 'Invalid login credentials' :
+                        loginError = 'Something went wrong. Please try again or contact support';   
                 }
+
+                // resetting login button
+                disabled=false;
+
+            }).then(res => {
+                signedIn.update(x => x = true);
+                window.localStorage.setItem('accessToken', res.accessToken);
+                goto(`/`, {replaceState:true})
             }).catch(() =>loginError = 'Something went wrong. Please try again or contact support')
     }
 
