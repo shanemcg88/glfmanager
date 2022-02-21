@@ -1,6 +1,6 @@
 <script>
   import { goto } from "$app/navigation";
-  import { signOut } from '../../shared/fetch.svelte'
+  import { signOut } from '../../shared/globalFetch.svelte'
 
 </script>
 

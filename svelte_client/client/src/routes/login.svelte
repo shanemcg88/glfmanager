@@ -1,7 +1,7 @@
 <script>
     import { signedIn } from '../auth';
     import { goto } from '$app/navigation';
-    import { loginFetch } from '../shared/fetch.svelte';
+    import { loginFetch } from '../shared/globalFetch.svelte';
 
     let userName = 'shanelgmcguire@gmail.com';
     let password = 'Password1';
@@ -17,11 +17,11 @@
         else 
             disabled = true;
 
-    function loginSubmit() {
+    async function loginSubmit() {
         // disabling login button
         disabled = true;
         
-        loginFetch(userName, password)
+        await loginFetch(userName, password)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -35,9 +35,9 @@
                 disabled=false;
 
             }).then(res => {
-                signedIn.update(x => x = true);
                 window.localStorage.setItem('accessToken', res.accessToken);
-                goto(`/`, {replaceState:true})
+                signedIn.update(x => x = true);
+                goto(`/`, {replaceState:true});
             }).catch(() =>loginError = 'Something went wrong. Please try again or contact support')
     }
 

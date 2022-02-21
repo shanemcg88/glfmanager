@@ -1,4 +1,5 @@
 <script context="module">
+    import { employeeList } from '../stores';
     import { signedIn } from '../auth';
     import { goto } from '$app/navigation';
     import { browser } from '$app/env';
@@ -7,9 +8,9 @@
     let bearer;
     let responseError = '';
 
-    if (browser && localStorage.getItem("accessToken")) {
-        bearer = localStorage.getItem("accessToken")
-    }
+    // if (browser && localStorage.getItem("accessToken")) {
+    //     bearer = localStorage.getItem("accessToken")
+    // }
     
     export async function loginFetch(userName, password) {
         return await fetch(`${rootUrl}/useraccount/login`, {
@@ -32,7 +33,7 @@
             method: 'GET',
             mode: 'cors',
             credentials: 'include'
-        })
+        });
         if (response.ok) {
             localStorage.clear();
             signedIn.update(value => value = false);
@@ -42,15 +43,44 @@
         }
     }
 
+
+    export async function userAuth() {
+        await fetch(`${rootUrl}/useraccount/auth`, {
+            method: 'GET',
+            mode: 'cors', 
+            credentials: 'include'
+        }).then(res => {
+            if (res.status===401){
+                signedIn.update(value => value = false);
+                goto('/login')
+            }
+            if (res.ok)
+            return res.json();
+
+        }).then((res)=>{
+            if (res.IsAuth)
+                signedIn.update((value) => value = true)
+        }).catch(() => {
+            // Redirect user to login page if any errors occur
+            signedIn.update(value => value = false);
+            goto('/login')     
+        });
+    }
+
     export async function getEmployees() {      
-        console.log('bearer', bearer);  
+        let bearer = localStorage.getItem("accessToken");
         await fetch(`${rootUrl}/employee`, {
             method: 'GET',
             mode: 'cors', 
             credentials: 'include',
-            headers: {'Authorization': `Bearer ${bearer}`}
+            headers: {
+                'Authorization': `Bearer ${bearer}`,
+                'Content-Type': 'application/json'
+            }
         }).then(res => {
-            res.ok ? res.json() : signOut();
-        })   
+            res.ok ? res.json()
+            .then(data => employeeList.update(value => value = data))
+            : signOut();
+        }).catch(() => { throw new Error("Something went wrong grabbing employees") })
     }
 </script>
