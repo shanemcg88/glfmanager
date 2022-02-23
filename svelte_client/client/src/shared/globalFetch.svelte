@@ -50,11 +50,14 @@
             mode: 'cors', 
             credentials: 'include'
         }).then(res => {
+            // if idserver cookie expires
             if (res.status===401){
                 signedIn.update(value => value = false);
                 goto('/login')
             }
             if (res.ok)
+                // signedIn will lose it's state if page is refreshed
+                signedIn.update(value => value = true);
             return res.json();
 
         }).then((res)=>{

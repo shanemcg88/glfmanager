@@ -37,7 +37,7 @@
             }).then(res => {
                 window.localStorage.setItem('accessToken', res.accessToken);
                 signedIn.update(x => x = true);
-                goto(`/`, {replaceState:true});
+                goto(`/jobs`, {replaceState:true});
             }).catch(() =>loginError = 'Something went wrong. Please try again or contact support')
     }
 

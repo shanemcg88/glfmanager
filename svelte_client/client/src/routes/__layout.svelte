@@ -13,10 +13,6 @@ let pageSelected = navOptions[0];
 let intSelected = 0;
 
 signedIn.subscribe(value => isSignedIn = value);
-function changeComponent(event) {
-    pageSelected = navOptions[event.detail.number];
-    intSelected = event.detail.number;
-}
 
 </script>
 
@@ -26,14 +22,15 @@ function changeComponent(event) {
     <nav>
         <div class="container-fluid">
             <div class="row">
-                <TopNavBar />
+                {#if (isSignedIn)}
+                    <TopNavBar />
+                {/if}
             </div>
             <div class="row" id="sideNavContainer">
-                <SideNavBar on:changePage={changeComponent}
-                {intSelected}
-                />
+                {#if (isSignedIn)}
+                    <SideNavBar />
+                {/if}
                 <div class="col-sm" id="content">
-                    <!-- <svelte:component this={pageSelected.component}/> -->
                     <slot />
                 </div>
             </div>
