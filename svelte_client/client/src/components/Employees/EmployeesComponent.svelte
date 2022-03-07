@@ -6,7 +6,6 @@
     let employees;
     employeeList.subscribe(() => employees = employeeList);
     
-    $: console.log('$employees.length', $employees);
 </script>
 
 <h1>EmployeesComponent</h1>

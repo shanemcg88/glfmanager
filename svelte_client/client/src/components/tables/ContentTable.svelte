@@ -11,6 +11,7 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
     let data = $tableContent;
     let pages = 0;
     let pageSelected = 1;
+    let searchInput = '';
 
     function setDisplayNumber(displayNum) {
 
@@ -108,6 +109,32 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
         return pages = calc;
     }
 
+    function search() {
+        let searchColumns = [];
+        let searchResults = [];
+
+        // Which columns are searchable
+        tableSettings.forEach(column => {
+            if (column.isSearchable)
+            searchColumns.push(column.dataKey);
+        })
+        console.log('searchColumns', searchColumns);
+
+        for (let value of Object.values(data))
+        {
+            searchColumns.forEach(column => {
+                if (value[column] == searchInput) {
+                    searchResults.push(value);
+                }
+            })
+        }
+
+        console.log('searchresults', searchResults);
+
+        dataDisplayed = searchResults;
+
+    }
+
     onMount(() => {
         setDisplayNumber(numberOfDataDisplayed);
         pageCalculator();
@@ -116,12 +143,30 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
 </script>
 
+
+<!-- Search Input -->
+<div class="input-group mb-3" id="searchDiv">
+    <input 
+        type="search" bind:value={searchInput} 
+        class="form-control" id="inputGroup-sizing-default"
+    >
+    <span 
+        class="input-group-text searchBtn"
+        on:click={search}
+    >
+        Search
+    </span>
+</div>
+
 <table class="table table-striped table-hover">
     <!-- Main Table Column Headings -->
     <thead>
         <tr>
             { #each tableSettings as setting, i }
-                <th on:click={()=>sortColumn(i, setting.dataKey, setting.isSorted)}>
+                <th 
+                    class="tableColumnName"
+                    on:click={()=>sortColumn(i, setting.dataKey, setting.isSorted)}
+                >
                     { setting.heading }
                     { #if setting.sort }
                         <button
@@ -209,9 +254,13 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
             </span>
         </li>
     </ul>
+    <div><!-- Empty div to center <ul class="pagination"> --></div>
 </div>
 
 <style>
+    .tableColumnName {
+        cursor: pointer;
+    }
     .icon {
         color: black;
         background: none;
@@ -219,4 +268,19 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
         width: 32px;
         height: 32px;
     } 
+
+    #searchDiv {
+        width: 16vw;
+        margin-left: auto;
+    }
+
+    .searchBtn {
+        background-color: #0d6efd;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .pagination {
+        cursor: pointer;
+    }
 </style>
