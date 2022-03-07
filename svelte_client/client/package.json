@@ -29,7 +29,9 @@
   },
   "type": "module",
   "dependencies": {
+    "feather-icons": "^4.28.0",
     "oidc-client": "^1.11.5",
+    "svelte-icons": "^2.1.0",
     "sveltekit-oidc": "0.0.8"
   }
 }

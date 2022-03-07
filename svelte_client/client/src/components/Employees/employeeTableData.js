@@ -3,19 +3,19 @@ export const employeeTableData = [
         heading: 'First Name',
         dataKey: 'firstName',
         sort: true,
-        isSorted: false
+        isSorted: null
     },
     {
         heading: 'Last Name',
         dataKey: 'lastName',
         sort: true,
-        isSorted: false
+        isSorted: null
     },
     {
         heading: 'Email',
         dataKey: 'email',
         sort: true,
-        isSorted: false
+        isSorted: null
     },
     {
         heading: 'Phone Number',
