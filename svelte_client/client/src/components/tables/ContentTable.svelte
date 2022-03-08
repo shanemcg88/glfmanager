@@ -115,21 +115,22 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
         // Which columns are searchable
         tableSettings.forEach(column => {
-            if (column.isSearchable)
-            searchColumns.push(column.dataKey);
+            if (column.isSearchable) {
+                searchColumns.push(column.dataKey);
+            }
         })
-        console.log('searchColumns', searchColumns);
 
-        for (let value of Object.values(data))
-        {
-            searchColumns.forEach(column => {
-                if (value[column] == searchInput) {
-                    searchResults.push(value);
+        for (const [key, value] of Object.entries(data)) {
+            for (let prop of searchColumns) {
+
+                var item = value[prop].toString().toUpperCase();
+
+                if (item.includes(searchInput.toUpperCase())) {
+                    searchResults.push(data[key]);       
+                    break;
                 }
-            })
+            }
         }
-
-        console.log('searchresults', searchResults);
 
         dataDisplayed = searchResults;
 
