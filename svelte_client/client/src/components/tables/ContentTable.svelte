@@ -2,6 +2,8 @@
 import { onMount } from "svelte";
 import IoIosArrowDown from 'svelte-icons/io/IoIosArrowDown.svelte';
 import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
+import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte'
+import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
 
     export let tableSettings;
     export let tableContent;
@@ -99,17 +101,30 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
     function pageCalculator() {
 
-        let totalData = $tableContent.length;
+        let totalData = data.length;
         let calc = Math.floor(totalData / numberOfDataDisplayed);
 
         if (totalData % numberOfDataDisplayed > 0) {
             calc = calc + 1;
         }
+        
+        if (calc === 0)
+            return pages = 1;
 
         return pages = calc;
     }
 
     function search() {
+
+        if (searchInput === "") {
+            // Set table back to it's original state if blank search is clicked
+            data = $tableContent;
+            pageCalculator();
+            pagination(1);
+            return;
+
+        }
+
         let searchColumns = [];
         let searchResults = [];
 
@@ -120,20 +135,23 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
             }
         })
 
-        for (const [key, value] of Object.entries(data)) {
+        // Creating the search result
+        for (const [key, value] of Object.entries($tableContent)) {
             for (let prop of searchColumns) {
 
                 var item = value[prop].toString().toUpperCase();
 
                 if (item.includes(searchInput.toUpperCase())) {
-                    searchResults.push(data[key]);       
+                    searchResults.push($tableContent[key]);       
                     break;
                 }
             }
         }
 
-        dataDisplayed = searchResults;
-
+        data = searchResults;
+        pageCalculator();
+        pagination(1);
+        
     }
 
     onMount(() => {
@@ -219,12 +237,24 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
     <ul class="pagination">
 
+        <!-- Jump to first page button -->
+        <li 
+            class = {
+                pageSelected === 1 ? 'page-item disabled' : 'page-item'
+            }
+            on:click={() => pagination(1)}
+        >
+            <span class = "page-link pageJump">
+                &laquo;
+            </span>
+        </li>
+
         <!-- Previous Button -->
         <li 
             class = {
                 pageSelected === 1 ? 'page-item disabled' : 'page-item'
             }
-            on:click={ ()=>pagination(pageSelected - 1) }
+            on:click={()=>pagination(pageSelected - 1)}
         >
             <span class = "page-link">
                 Previous
@@ -254,6 +284,19 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
                 Next
             </span>
         </li>
+
+        <!-- Jump to last page button -->
+        <li 
+            class = {
+                pageSelected === 1 ? 'page-item disabled' : 'page-item'
+            }
+            on:click={() => pagination(pages)}
+        >
+            <span class = "page-link pageJump">
+                &raquo;
+            </span>
+        </li>
+
     </ul>
     <div><!-- Empty div to center <ul class="pagination"> --></div>
 </div>
@@ -284,4 +327,11 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
     .pagination {
         cursor: pointer;
     }
+
+    .pagination {
+        max-height: 40px;
+        max-width: 312.83px;
+    }
+
+
 </style>

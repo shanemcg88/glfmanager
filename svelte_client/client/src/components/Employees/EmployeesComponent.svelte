@@ -8,7 +8,6 @@
     
 </script>
 
-<h1>EmployeesComponent</h1>
 { #if $employees.length > 0 }
     <ContentTable 
         tableContent = { employees }
