@@ -1,5 +1,5 @@
 <script context="module">
-    import { employeeList } from '../stores';
+    import { employeeList, clientList } from '../stores';
     import { signedIn } from '../auth';
     import { goto } from '$app/navigation';
     import { browser } from '$app/env';
@@ -85,5 +85,22 @@
             .then(data => employeeList.update(value => value = data))
             : signOut();
         }).catch(() => { throw new Error("Something went wrong grabbing employees") })
+    }
+
+    export async function getClients() {
+        let bearer = localStorage.getItem("accessToken");
+        await fetch(`${rootUrl}/company`, {
+            method: 'GET',
+            mode: 'cors', 
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${bearer}`,
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            res.ok? res.json()
+            .then(data => clientList.update(value => value = data))
+            : signOut();
+        }).catch(() => { throw new Error("Something went wrong when grabbing clients") })
     }
 </script>

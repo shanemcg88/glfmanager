@@ -2,8 +2,6 @@
 import { onMount } from "svelte";
 import IoIosArrowDown from 'svelte-icons/io/IoIosArrowDown.svelte';
 import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
-import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte'
-import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
 
     export let tableSettings;
     export let tableContent;
@@ -32,9 +30,12 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
 
     }
 
-    function sortColumn(index, column, isSorted) {
-        console.log('isSorted = ', isSorted);
+    function sortColumn(index, setting) {
+        var {column, isSorted, sort} = setting;
         
+        if (!sort)
+            return;
+
         let columnData = [];
         data.forEach((x) =>{
             columnData.push(x[column]);
@@ -181,10 +182,11 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
     <!-- Main Table Column Headings -->
     <thead>
         <tr>
+            <!-- Sort Column -->
             { #each tableSettings as setting, i }
                 <th 
                     class="tableColumnName"
-                    on:click={()=>sortColumn(i, setting.dataKey, setting.isSorted)}
+                    on:click={()=>sortColumn(i, setting)}
                 >
                     { setting.heading }
                     { #if setting.sort }
@@ -244,8 +246,8 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
             }
             on:click={() => pagination(1)}
         >
-            <span class = "page-link pageJump">
-                &laquo;
+            <span class = "page-link">
+                &laquo; First
             </span>
         </li>
 
@@ -258,6 +260,7 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
         >
             <span class = "page-link">
                 Previous
+                <!-- &#8592; -->
             </span>
         </li>
 
@@ -281,19 +284,20 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
             on:click={ ()=>pagination(pageSelected + 1) }
         >
             <span class = "page-link">
-                Next
+                Next 
+                <!-- &#8594; -->
             </span>
         </li>
 
         <!-- Jump to last page button -->
         <li 
             class = {
-                pageSelected === 1 ? 'page-item disabled' : 'page-item'
+                pageSelected === pages ? 'page-item disabled' : 'page-item'
             }
             on:click={() => pagination(pages)}
         >
             <span class = "page-link pageJump">
-                &raquo;
+               Last &raquo;
             </span>
         </li>
 
@@ -327,11 +331,5 @@ import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
     .pagination {
         cursor: pointer;
     }
-
-    .pagination {
-        max-height: 40px;
-        max-width: 312.83px;
-    }
-
 
 </style>

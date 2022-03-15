@@ -11,5 +11,5 @@
 {:then}
     <EmployeesComponent/>
 {:catch error}
-    <h1>{error}</h1>
+    <h1>{ error }</h1>
 {/await}
