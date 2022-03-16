@@ -31,11 +31,20 @@ namespace GLFManager.App.Services.JobServices
             _context = context;
             _mapper = mapper;
         }
-        public async Task<List<JobsDto>> DailyJobs()
+
+        public async Task<List<JobsDto>> AllJobs()
+        {
+            List<Jobs> jobs = await _jobsRepository.GetAllJobs();
+            List<JobsDto> jobsDto = new List<JobsDto>();
+
+            return _mapper.Map<List<JobsDto>>(jobs);
+
+        }
+        public async Task<List<JobsDto>> DailyJobs(DateTime dateRequest)
         {
             // Get all jobs that are not completed and are for the current date
             List<Jobs> jobs = await _jobsRepository.GetAllJobs();
-            var filteredJobs = jobs.FindAll(j => j.IsJobComplete == false && j.DateOfJob.Day == DateTime.UtcNow.Day);
+            var filteredJobs = jobs.FindAll(j => j.IsJobComplete == false && j.DateOfJob.Date == dateRequest.Date);
 
             List<JobsDto> jobsDto = new List<JobsDto>();
             var dailyJobs = _mapper.Map<List<JobsDto>>(filteredJobs);

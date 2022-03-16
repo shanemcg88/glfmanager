@@ -49,7 +49,7 @@ namespace GLFManager.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<JobsViewModel>>> GetAllJobs()
         {
-            var allJobs = await _jobsRepository.GetAllJobs();
+            var allJobs = await _jobService.AllJobs();
 
             if (allJobs.Count == 0)
                 return NotFound("No jobs found");
@@ -65,15 +65,20 @@ namespace GLFManager.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("dailyjobs")]
-        public async Task<ActionResult<List<JobsDto>>> GetTodaysJobs()
+        [HttpPost("dailyjobs")]
+        public async Task<ActionResult<List<JobsDto>>> GetTodaysJobs([FromBody] DateRequest dateRequest)
         {
-            var result = await _jobService.DailyJobs();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var result = await _jobService.DailyJobs(dateRequest.DateRequested);
             if (result.Count == 0)
-                throw new Exception("No jobs found");
+                return Ok("No jobs found");
 
             return Ok(result);
         }
+
+
 
     }
 }

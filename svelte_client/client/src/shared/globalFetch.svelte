@@ -1,5 +1,5 @@
 <script context="module">
-    import { employeeList, clientList } from '../stores';
+    import { employeeList, clientList, jobsList } from '../stores';
     import { signedIn } from '../auth';
     import { goto } from '$app/navigation';
     import { browser } from '$app/env';
@@ -102,5 +102,27 @@
             .then(data => clientList.update(value => value = data))
             : signOut();
         }).catch(() => { throw new Error("Something went wrong when grabbing clients") })
+    }
+
+    export async function getDailyJobs(dateRequest) {
+        console.log('getdailyjobs ran', dateRequest);
+        let bearer = localStorage.getItem("accessToken");
+        await fetch(`${rootUrl}/job/dailyJobs`, {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${bearer}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dateRequested: dateRequest
+            })
+        }).then(res => {
+            console.log('get res', res);
+            res.ok? res.json()
+            .then(data => jobsList.update(value => value = data))
+            : signOut();
+        }).catch(() => { throw new Error("Something went wrong when grabbing jobs") })
     }
 </script>

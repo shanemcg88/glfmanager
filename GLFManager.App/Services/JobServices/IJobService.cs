@@ -9,6 +9,7 @@ namespace GLFManager.App.Services.JobServices
 {
     public interface IJobService
     {
-        Task<List<JobsDto>> DailyJobs(); 
+        Task<List<JobsDto>> AllJobs();
+        Task<List<JobsDto>> DailyJobs(DateTime dateRequest); 
     }
 }
