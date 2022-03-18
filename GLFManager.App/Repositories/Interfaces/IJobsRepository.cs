@@ -12,7 +12,8 @@ namespace GLFManager.App.Repositories.Interfaces
     {
         Task<JobsViewModel> GetJobById(Guid jobId);
         Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob);
-        Task<JobsViewModel> EditJob(EditJob editJob);
+        Task<JobsViewModel> UpdateJob(Jobs job);
         Task<List<Jobs>> GetAllJobs();
+        Task<List<JobsDto>> GetDailyJobs(DateTime dateRequested);
     }
 }

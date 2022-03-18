@@ -38,28 +38,12 @@ namespace GLFManager.App.Repositories
 
         public async Task<List<Jobs>> GetAllJobs()
         {
-
-            //List<Jobs> jobs = await _entityDbSet.Where(j => j.IsJobComplete == false && j.DateOfJob == DateTime.Today).ToListAsync();
-            //var test = await _context.Jobs
-            //    .Include(x => x.Company)
-            //    .ThenInclude(x => x.Name)
-
-            //return jobs;
-
-            //List<JobsViewModel> jobList = new List<JobsViewModel>();
             List<Jobs> jobsFromDb = await _context.Jobs
                 .Include(x => x.Company)
                 .Include(x => x.JobsEmployees)
                 .ThenInclude(y => y.Employee)
                 .ToListAsync();
             return jobsFromDb;
-            //foreach(var job in jobFromDb)
-            //{
-
-            //    jobList.Add(_mapper.Map<Jobs, JobsViewModel>(job));
-            //}
-
-            //return jobList;
         }
 
         public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
@@ -81,53 +65,22 @@ namespace GLFManager.App.Repositories
             return jobToView;
         }
 
-        private async Task<Employee> GetEmployee(Guid employeeId)
+        public async Task<JobsViewModel> UpdateJob(Jobs job)
         {
-            Employee employee = await _context.Employees.FindAsync(employeeId);
-            if (employee == null)
-                throw new NotFoundException("Employee " + employeeId + " doesn't exist");
-
-            return employee;
-        }
-
-        public async Task<JobsViewModel> EditJob(EditJob editJob)
-        {
-            var job = await Get(editJob.JobId);
-
-            job.Address = editJob.Address;
-            job.Contact = editJob.Contact;
-            job.PhoneNumber = editJob.PhoneNumber;
-            job.NumberOfPositions = editJob.NumberOfPositions;
-            job.Positions = editJob.Positions;
-
-            var jobEmployees = new List<JobsEmployee>();
-
-            // clear the jobemployee.employee and employee ids
-            var jeList = _context.JobsEmployees.Where(je => je.JobsId == job.Id).ToList();
-            _context.RemoveRange(jeList);
-
-            // add new employees to the jobemployee table
-            foreach (var employeeId in editJob.EmployeeIds)
-            {
-                Employee employee = await GetEmployee(employeeId);
-
-                var je = new JobsEmployee() {
-                    JobsId = editJob.JobId,
-                    Jobs = job,
-                    EmployeeId = employeeId,
-                    Employee = employee
-                };
-
-                jobEmployees.Add(je);
-            }
-
-            _context.JobsEmployees.AddRange(jobEmployees);
-
             _context.Jobs.Update(job);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Jobs, JobsViewModel>(job);
-             
+        }
+
+        // Get all jobs that are not completed and are on the date the user requested
+        public async Task<List<JobsDto>> GetDailyJobs(DateTime dateRequested)
+        {
+            List<Jobs> dailyJobs = await _context.Jobs.Where(j => !j.IsJobComplete && j.DateOfJob.Date == dateRequested.Date).ToListAsync();
+            List<JobsDto> jobsDto = new List<JobsDto>();
+            var filteredJobs = _mapper.Map<List<JobsDto>>(dailyJobs);
+
+            return filteredJobs;
         }
     }
 }

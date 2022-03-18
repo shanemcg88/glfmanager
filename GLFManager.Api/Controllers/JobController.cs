@@ -60,7 +60,7 @@ namespace GLFManager.Api.Controllers
         [HttpPut("editJob")]
         public async Task<ActionResult<JobsViewModel>> ModifyJob(EditJob editJob)
         {
-            var result = await _jobsRepository.EditJob(editJob);
+            var result = await _jobService.EditJob(editJob);
 
             return Ok(result);
         }
