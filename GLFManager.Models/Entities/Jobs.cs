@@ -23,7 +23,6 @@ namespace GLFManager.Models.Entities
             //EmployeeIds = src.Employees;
             //JobsEmployees = src.JobsEmployees;
         }
-
         public DateTime DateOfJob { get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }

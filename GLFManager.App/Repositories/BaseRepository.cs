@@ -23,7 +23,7 @@ namespace GLFManager.App.Repositories
             _entityDbSet = context.Set<TEntity>();
         }
 
-        public async Task<TEntity> Create(TEntity src)
+        public virtual async Task<TEntity> Create(TEntity src)
         {
             _entityDbSet.Add(src);
             await _context.SaveChangesAsync();

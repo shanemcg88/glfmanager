@@ -31,5 +31,7 @@
         tableContent = { jobs }
         tableSettings = { jobsTableData }
     />
+{ :else }
+    <h4>No Jobs Found</h4>
 { /if }
 

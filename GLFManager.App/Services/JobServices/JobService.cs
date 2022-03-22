@@ -47,12 +47,27 @@ namespace GLFManager.App.Services.JobServices
         public async Task<List<JobsDto>> DailyJobs(DateTime dateRequest)
         {
             // Get all jobs that are not completed and are for the current date
-            List<JobsDto> jobs = await _jobsRepository.GetDailyJobs(dateRequest);
+            List<Jobs> jobs = await _jobsRepository.GetDailyJobs(dateRequest);
+            return _mapper.Map<List<JobsDto>>(jobs);
+        }
 
-            if (jobs.Count == 0)
-                throw new NotFoundException("No jobs available at this date");
+        public async Task<JobsViewModel> CreateJob(CreateJobViewModel createJob)
+        {
+            var job = new Jobs(createJob);
 
-            return jobs;
+            if (createJob.Employees.Count > 0)
+            {
+                foreach (var employeeId in createJob.Employees)
+                {
+                    Employee employee = await _employeeRepository.Get(employeeId);
+                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employeeId, Employee = employee });
+                }
+            }
+
+            var createdJob = await _jobsRepository.Create(job);
+            var jobToView = _mapper.Map<Jobs, JobsViewModel>(createdJob);
+
+            return jobToView;
         }
 
         // Have to test if this method works still

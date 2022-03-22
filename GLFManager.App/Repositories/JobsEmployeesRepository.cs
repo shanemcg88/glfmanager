@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace GLFManager.App.Repositories
 {
-    public class JobsEmployeesRepository : BaseRepository<JobsEmployee, Guid, ApplicationDbContext>, IJobsEmployeesRepository
+    public class JobsEmployeesRepository : IJobsEmployeesRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public JobsEmployeesRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+        public JobsEmployeesRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

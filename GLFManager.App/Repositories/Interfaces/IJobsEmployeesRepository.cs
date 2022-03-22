@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GLFManager.App.Repositories.Interfaces
 {
-    public interface IJobsEmployeesRepository : IBaseRepository<JobsEmployee, Guid>
+    public interface IJobsEmployeesRepository
     {
         void ClearIds(Guid id);
 

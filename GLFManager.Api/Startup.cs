@@ -103,6 +103,7 @@ namespace GLFManager.Api
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IJobsRepository, JobsRepository>();
+            services.AddScoped<IJobsEmployeesRepository, JobsEmployeesRepository>();
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IUserService, UserService>();
 

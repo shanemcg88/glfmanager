@@ -74,13 +74,19 @@ namespace GLFManager.App.Repositories
         }
 
         // Get all jobs that are not completed and are on the date the user requested
-        public async Task<List<JobsDto>> GetDailyJobs(DateTime dateRequested)
+        public async Task<List<Jobs>> GetDailyJobs(DateTime dateRequested)
         {
-            List<Jobs> dailyJobs = await _context.Jobs.Where(j => !j.IsJobComplete && j.DateOfJob.Date == dateRequested.Date).ToListAsync();
-            List<JobsDto> jobsDto = new List<JobsDto>();
-            var filteredJobs = _mapper.Map<List<JobsDto>>(dailyJobs);
 
-            return filteredJobs;
+            List<Jobs> dailyJobs = await _context.Jobs
+                .Include(x => x.Company)
+                .Include(x => x.JobsEmployees)
+                .ThenInclude(y => y.Employee)
+                .Where(j => !j.IsJobComplete && j.DateOfJob.Date == dateRequested.Date)
+                .ToListAsync();
+            //List<Jobs> dailyJobs = await _context.Jobs.Where(j => !j.IsJobComplete && j.DateOfJob.Date == dateRequested.Date).ToListAsync();
+
+
+            return dailyJobs;
         }
     }
 }

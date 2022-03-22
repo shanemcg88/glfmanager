@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GLFManager.Models.Entities
 {
-    public class JobsEmployee : BaseEntity<Guid>
+    public class JobsEmployee
     {
         public Guid JobsId { get; set; }
         public Jobs Jobs { get; set; }

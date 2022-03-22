@@ -12,5 +12,6 @@ namespace GLFManager.App.Services.JobServices
         Task<List<JobsDto>> AllJobs();
         Task<List<JobsDto>> DailyJobs(DateTime dateRequest);
         Task<JobsViewModel> EditJob(EditJob editJob);
+        Task<JobsViewModel> CreateJob(CreateJobViewModel createJob);
     }
 }

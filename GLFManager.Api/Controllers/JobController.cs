@@ -31,7 +31,7 @@ namespace GLFManager.Api.Controllers
         [HttpPost("createjob")]
         public async Task<ActionResult<JobsViewModel>> CreateJob(CreateJobViewModel createJob)
         {
-            var result = await _jobsRepository.CreateJobSetup(createJob);
+            var result = await _jobService.CreateJob(createJob);
             return Ok(result);
         }
 
@@ -72,8 +72,6 @@ namespace GLFManager.Api.Controllers
                 return BadRequest();
 
             var result = await _jobService.DailyJobs(dateRequest.DateRequested);
-            if (result.Count == 0)
-                return Ok("No jobs found");
 
             return Ok(result);
         }

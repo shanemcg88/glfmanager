@@ -58,7 +58,7 @@ namespace GLFManager.Tests
             signInManager.Setup(x => x.PasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Success);
 
-            Controller = new UserAccountController(mockSignInManager.Object, mockIConfiguration.Object, mockUserManager.Object, mockRepository.Object);
+            //Controller = new UserAccountController(mockSignInManager.Object, mockIConfiguration.Object, mockUserManager.Object, mockRepository.Object);
         }
 
         [Theory]
