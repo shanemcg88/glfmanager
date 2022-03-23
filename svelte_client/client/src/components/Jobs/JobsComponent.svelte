@@ -2,28 +2,33 @@
     import ContentTable from '../tables/ContentTable.svelte';
     import { jobsList } from '../../stores';
     import { jobsTableData } from './jobsTableData';
-    console.log('jobslist', jobsList);
+    import { onMount } from 'svelte';
     let jobs;
     let employeeString = '';
-    jobsList.subscribe((x) => jobs = jobsList);
-    // jobsList.subscribe((res) => {
-    //     console.log('res', res);
-    //     // Converting an employee list to a string for the content table
-    //     var emps = res[0].employeeList;
+    jobsList.subscribe(() => jobs = jobsList);
 
-    //     for (let i=0; i < emps.length-1; i++) {
-    //         if (i === emps.length-1 || emps.length <= 1) {
-    //             employeeString += emps[i]['firstName'] + ' ' + emps[i]['lastName'];
-    //         } else { 
-    //             employeeString += emps[i]['firstName'] + ' ' + emps[i]['lastName'] + ', '; 
-    //         }
-    //     }
+    function flattenEmployeeNames(jobsFromStore) {
+        console.log('jobsFromStore start', jobsFromStore);
+        if (jobsFromStore.length === 0)
+            return;
 
-    //     res[0].employeeList = employeeString;
-    //     this.jobs = res;
-    // })
-    console.log('hi')
-    $: console.log('JOBS', $jobs);
+        var workers = jobsFromStore[0].employeeList;
+        console.log('workers', workers);
+        for (let i=0; i < workers.length; i++) {
+            console.log('first ran');
+            if (i === workers.length-1 || workers.length <= 1) {
+                console.log('second ran');
+                employeeString += workers[i]['firstName'] + ' ' + workers[i]['lastName'];
+            } else { 
+                console.log('third ran');
+                employeeString += workers[i]['firstName'] + ' ' + workers[i]['lastName'] + ', '; 
+            }    
+        }
+        console.log ('jobsFromStore at end', jobsFromStore);
+        return jobsFromStore;
+    }
+
+    $: flattenEmployeeNames($jobs);
 </script>
 
 { #if $jobs.length > 0 }

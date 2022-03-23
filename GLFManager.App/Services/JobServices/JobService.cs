@@ -51,9 +51,10 @@ namespace GLFManager.App.Services.JobServices
             return _mapper.Map<List<JobsDto>>(jobs);
         }
 
-        public async Task<JobsViewModel> CreateJob(CreateJobViewModel createJob)
+        public async Task<JobsDto> CreateJob(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
+            job.Company = await _companyRepository.Get(createJob.CompanyId);
 
             if (createJob.Employees.Count > 0)
             {
@@ -65,7 +66,7 @@ namespace GLFManager.App.Services.JobServices
             }
 
             var createdJob = await _jobsRepository.Create(job);
-            var jobToView = _mapper.Map<Jobs, JobsViewModel>(createdJob);
+            var jobToView = _mapper.Map<Jobs, JobsDto>(createdJob);
 
             return jobToView;
         }

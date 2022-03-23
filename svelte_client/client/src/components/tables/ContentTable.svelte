@@ -1,5 +1,5 @@
 <script>
-import { onMount } from "svelte";
+import { onDestroy, onMount } from "svelte";
 import IoIosArrowDown from 'svelte-icons/io/IoIosArrowDown.svelte';
 import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
@@ -159,7 +159,7 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
         setDisplayNumber(numberOfDataDisplayed);
         pageCalculator();
         pagination(1);
-    })
+    });
 
 </script>
 

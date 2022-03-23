@@ -17,12 +17,16 @@ namespace GLFManager.Api.Helpers
         {
             // To include the employee list in the current job
             CreateMap<Jobs, JobsViewModel>()
-                .ForMember(dest => dest.EmployeeList, opt => opt.MapFrom(j => j.JobsEmployees.Select(je => new EmployeeViewModel(je.Employee)).ToList()));
+                .ForMember(dest => dest.EmployeeList, opt => opt
+                    .MapFrom(j => j.JobsEmployees
+                        .Select(je => new EmployeeViewModel(je.Employee)).ToList()));
+
 
             CreateMap<Jobs, JobsDto>()
                 .ForMember(dest => dest.EmployeeList, opt => opt
                     .MapFrom(j => j.JobsEmployees
-                        .Select(je =>EmployeeFullName(je.Employee.Id, je.Employee.FirstName, je.Employee.LastName))));
+                        .Select(je => EmployeeFullName(je.Employee.Id, je.Employee.FirstName, je.Employee.LastName))));
+
         }
 
         private EmployeeFirstLastIDVM EmployeeFullName(Guid empId, string firstName, string lastName)
