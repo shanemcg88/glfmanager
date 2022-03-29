@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using GLFManager.App.Exceptions;
 using GLFManager.App.Repositories.Interfaces;
+using GLFManager.App.Services.JobServices.JobBuilders;
 using GLFManager.Models.Dtos;
+using GLFManager.Models.Dtos.Jobs;
 using GLFManager.Models.Entities;
+using GLFManager.Models.ViewModels.Employees;
 using GLFManager.Models.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
@@ -44,14 +47,57 @@ namespace GLFManager.App.Services.JobServices
             return _mapper.Map<List<JobsDto>>(jobs);
 
         }
-        public async Task<List<JobsDto>> DailyJobs(DateTime dateRequest)
+        public async Task<List<DailyJobsDto>> DailyJobs(DateTime dateRequest)
         {
             // Get all jobs that are not completed and are for the current date
             List<Jobs> jobs = await _jobsRepository.GetDailyJobs(dateRequest);
-            return _mapper.Map<List<JobsDto>>(jobs);
+            List<DailyJobsDto> dailyJobsDto = new List<DailyJobsDto>();
+            List<DailyJobEmployeeBuilder> employeeBuilder = new List<DailyJobEmployeeBuilder>();
+            List<Guid> employeeIds = new List<Guid>();
+            List<Employee> employees = new List<Employee>();
+
+            foreach (var job in jobs)
+            {
+                var jobBuilder = new DailyJobEmployeeBuilder.Builder();
+
+                var company = await _companyRepository.Get(job.CompanyId);
+                jobBuilder = jobBuilder.WithCompany(company.Name);
+
+                employeeIds = (job.JobsEmployees.Select(e => e.EmployeeId).ToList());
+
+                employees = await _employeeRepository.GetMultipleEmployeesByID(employeeIds);
+
+                jobBuilder = jobBuilder.WithJobId(job.Id)
+                                       .WithEmployees(employees)
+                                       .WithTimeOfJob(job.DateOfJob);
+
+                employeeBuilder.Add(jobBuilder.Build());
+
+            }
+
+            dailyJobsDto = jobs.Join(employeeBuilder, 
+                                    job => job.Id, 
+                                    empBldr => empBldr.Id, 
+                                    (job, emp) => new DailyJobsDto {
+                                        Id = job.Id,
+                                        DateOfJob = job.DateOfJob,
+                                        TimeOfJob = emp.TimeOfJob,
+                                        Address = job.Address,
+                                        Contact = job.Contact,
+                                        PhoneNumber = job.PhoneNumber,
+                                        NumberOfPositions = job.NumberOfPositions,
+                                        Positions = job.Positions,
+                                        IsJobComplete = job.IsJobComplete,
+                                        CompanyId = job.CompanyId,
+                                        CompanyName = emp.CompanyName,
+                                        EmployeesNameString = emp.EmployeesNameString,
+                                        EmployeeIdList = emp.EmployeeIdList
+                                    }).ToList();
+
+            return dailyJobsDto;
         }
 
-        public async Task<JobsDto> CreateJob(CreateJobViewModel createJob)
+        public async Task<JobsDto> CreateJobSetup(CreateJobViewModel createJob)
         {
             var job = new Jobs(createJob);
             job.Company = await _companyRepository.Get(createJob.CompanyId);

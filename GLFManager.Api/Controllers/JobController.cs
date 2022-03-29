@@ -3,6 +3,7 @@ using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.App.Services.JobServices;
 using GLFManager.Models.Dtos;
+using GLFManager.Models.Dtos.Jobs;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Jobs;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,7 @@ namespace GLFManager.Api.Controllers
         [HttpPost("createjob")]
         public async Task<ActionResult<JobsDto>> CreateJob(CreateJobViewModel createJob)
         {
-            var result = await _jobService.CreateJob(createJob);
+            var result = await _jobService.CreateJobSetup(createJob);
             return Ok(result);
         }
 

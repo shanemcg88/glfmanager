@@ -46,25 +46,6 @@ namespace GLFManager.App.Repositories
             return jobsFromDb;
         }
 
-        public async Task<JobsViewModel> CreateJobSetup(CreateJobViewModel createJob)
-        {
-            var job = new Jobs(createJob);
-
-            if (createJob.Employees != null)
-            {
-                for (int i = 0; i < createJob.Employees.Count; i++)
-                {
-                    Employee employee = await _context.Employees.FindAsync(createJob.Employees[i]);
-                    job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = createJob.Employees[i], Employee = employee });
-                }
-            }
-
-            var createdJob = await Create(job);
-            var jobToView = _mapper.Map<Jobs, JobsViewModel>(createdJob);
-
-            return jobToView;
-        }
-
         public async Task<JobsViewModel> UpdateJob(Jobs job)
         {
             _context.Jobs.Update(job);

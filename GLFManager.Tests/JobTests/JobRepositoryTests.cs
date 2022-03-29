@@ -58,15 +58,15 @@ namespace GLFManager.Tests.JobTests
             job.JobsEmployees.Add(new JobsEmployee() { JobsId = job.Id, EmployeeId = employee2.Id });
 
             var mockJobsRepository = new Mock<IJobsRepository>();
-            mockJobsRepository.Setup(repo => repo.CreateJobSetup(createJob))
-                .ReturnsAsync(new JobsViewModel());
+            ///mockJobsRepository.Setup(repo => repo.CreateJobSetup(createJob))
+                //.ReturnsAsync(new JobsViewModel());
 
             // Act
-            var resultFromJobCreate = await mockJobsRepository.Object.CreateJobSetup(createJob);
+            //var resultFromJobCreate = await mockJobsRepository.Object.CreateJobSetup(createJob);
 
             // Assert
-            Assert.NotNull(resultFromJobCreate);
-            Assert.IsType<JobsViewModel>(resultFromJobCreate);
+            //Assert.NotNull(resultFromJobCreate);
+            //Assert.IsType<JobsViewModel>(resultFromJobCreate);
             //Assert.Equal(companyId, resultFromJobCreate.CompanyId);
            // Assert.Equal(2, resultFromJobCreate.JobsEmployees.Count);
         }

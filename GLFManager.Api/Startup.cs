@@ -107,6 +107,7 @@ namespace GLFManager.Api
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IUserService, UserService>();
 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -123,6 +124,7 @@ namespace GLFManager.Api
                 //     Path.Combine(env.ContentRootPath, @"ClientApp/dist")),
                 //     RequestPath = new PathString("/ClientApp/dist")
             });
+
 
             //app.UseHttpsRedirection();
             app.UseCors(MyAllowSpecificOrigins);

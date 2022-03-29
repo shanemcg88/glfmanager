@@ -163,6 +163,7 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
 </script>
 
+{ #if dataDisplayed.length > 0 }
 
 <!-- Search Input -->
 <div class="input-group mb-3" id="searchDiv">
@@ -304,6 +305,10 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
     </ul>
     <div><!-- Empty div to center <ul class="pagination"> --></div>
 </div>
+
+{ :else }
+<p>nothing to display</p>
+{ /if }
 
 <style>
     .tableColumnName {

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using GLFManager.App.Services.JobServices.JobBuilders;
 using GLFManager.Models.Dtos;
+using GLFManager.Models.Dtos.Jobs;
 using GLFManager.Models.Entities;
 using GLFManager.Models.ViewModels.Companies;
 using GLFManager.Models.ViewModels.Employees;
@@ -41,4 +43,7 @@ namespace GLFManager.Api.Helpers
         }
 
     }
+
+
+
 }

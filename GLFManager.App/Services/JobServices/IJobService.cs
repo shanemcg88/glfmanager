@@ -1,4 +1,5 @@
 ﻿using GLFManager.Models.Dtos;
+using GLFManager.Models.Dtos.Jobs;
 using GLFManager.Models.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace GLFManager.App.Services.JobServices
     public interface IJobService
     {
         Task<List<JobsDto>> AllJobs();
-        Task<List<JobsDto>> DailyJobs(DateTime dateRequest);
+        Task<List<DailyJobsDto>> DailyJobs(DateTime dateRequest);
         Task<JobsViewModel> EditJob(EditJob editJob);
-        Task<JobsDto> CreateJob(CreateJobViewModel createJob);
+        Task<JobsDto> CreateJobSetup(CreateJobViewModel createJob);
     }
 }

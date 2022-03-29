@@ -1,16 +1,16 @@
 ﻿using GLFManager.Models.Entities;
-using GLFManager.Models.ViewModels.Companies;
 using GLFManager.Models.ViewModels.Employees;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GLFManager.Models.Dtos
+namespace GLFManager.Models.Dtos.Jobs
 {
-    public class JobsDto
+    public class DailyJobsDto
     {
         public Guid Id { get; set; }
         public DateTime DateOfJob { get; set; }
+        public string TimeOfJob { get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
         public string PhoneNumber { get; set; }
@@ -20,6 +20,7 @@ namespace GLFManager.Models.Dtos
         public Guid CompanyId { get; set; }
         public string CompanyName { get; set; }
         //public CompanyViewModel Company { get; set; }
-        public List<EmployeeFirstLastIDVM> EmployeeList { get; set; }
+        public string EmployeesNameString { get; set; }
+        public List<Guid> EmployeeIdList { get; set; }
     }
 }
