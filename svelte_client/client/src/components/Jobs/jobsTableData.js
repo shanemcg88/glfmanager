@@ -1,7 +1,7 @@
 export const jobsTableData = [
     {
-        heading: 'Date',
-        dataKey: 'dateOfJob',
+        heading: 'Start Time',
+        dataKey: 'timeOfJob',
         sort: true,
         isSorted: null,
         isSearchable: false
@@ -43,7 +43,7 @@ export const jobsTableData = [
     },
     {
         heading: 'Employees',
-        dataKey: 'employeeList',
+        dataKey: 'employeesNameString',
         sort: false,
         isSorted: null,
         isSearchable: false
