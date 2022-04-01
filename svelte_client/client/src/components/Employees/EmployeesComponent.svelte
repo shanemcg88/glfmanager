@@ -6,11 +6,22 @@
 
     let employees;
     employeeList.subscribe(() => employees = employeeList);
-    
+
+    let test;
+
+
 </script>
 
 <nav class="navbar navbar-light bg-light employeeNav">
-    <button type="button" class="btn btn-outline-primary addEmployeeBtn">+ Add Employee</button>
+    <!-- Add Employee Modal -->
+    <button 
+        type="button" 
+        class="btn btn-outline-primary addEmployeeBtn"
+        on:click={()=>test.toggle()}
+    >
+        + Create Employee
+    </button>
+    
 
 </nav>
 
@@ -22,6 +33,8 @@
 { :else }
     <h4>No employees found</h4>
 { /if }
+
+<AddEmployeeModal bind:this={test}/>
 
 <style>
     .employeeNav {
