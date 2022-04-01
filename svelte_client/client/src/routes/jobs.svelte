@@ -1,13 +1,9 @@
 <script>
     import { getDailyJobs } from '../shared/globalFetch.svelte';
     import JobsComponent from '../components/Jobs/JobsComponent.svelte';
-import { onMount } from 'svelte';
 
-    //  var today = new Date().toISOString();
-    var today = new Date("2022-03-30").toISOString
-    console.log('today', today);
-    console.log('Date', Date);
-    console.log('Date.UTC', Date.UTC);
+    var today = new Date().toISOString();
+    //var today = new Date("2022-04-30").toISOString
 </script>
 
 <h1>Jobs</h1>

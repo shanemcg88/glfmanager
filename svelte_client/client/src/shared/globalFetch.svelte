@@ -81,6 +81,7 @@
                 'Content-Type': 'application/json'
             }
         }).then(res => {
+            console.log('employee res', res);
             res.ok ? res.json()
             .then(data => employeeList.update(value => value = data))
             : signOut();

@@ -51,12 +51,13 @@ namespace GLFManager.App.Services.JobServices.JobBuilders
 
             public Builder WithTimeOfJob(DateTime dateWithTime)
             {
-                _timeOfJob = dateWithTime.ToLocalTime().ToShortTimeString();
+                _timeOfJob = new DateTime().ToString("hh:mm tt"); // 12:00 AM
                 return this;
             }
 
             public Builder WithEmployees(List<Employee> employees)
             {
+                // Flattening the list of employees to one long string for front-end table
                 for (int i = 0; i < employees.Count; i++)
                 {
                     _employeeIdList.Add(employees[i].Id);

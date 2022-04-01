@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GLFManager.App.Exceptions;
 using GLFManager.App.Repositories;
 using GLFManager.App.Repositories.Interfaces;
 using GLFManager.App.Services.JobServices;
@@ -73,7 +74,6 @@ namespace GLFManager.Api.Controllers
                 return BadRequest();
 
             var result = await _jobService.DailyJobs(dateRequest.DateRequested);
-
             return Ok(result);
         }
 

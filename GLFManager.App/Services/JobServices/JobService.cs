@@ -49,13 +49,19 @@ namespace GLFManager.App.Services.JobServices
         }
         public async Task<List<DailyJobsDto>> DailyJobs(DateTime dateRequest)
         {
-            // Get all jobs that are not completed and are for the current date
-            List<Jobs> jobs = await _jobsRepository.GetDailyJobs(dateRequest);
             List<DailyJobsDto> dailyJobsDto = new List<DailyJobsDto>();
+            
+            List<Jobs> jobs = await _jobsRepository.GetDailyJobs(dateRequest);
+
+            // Return an empty list if no jobs are on the date requested
+            if (jobs.Count == 0)
+                return dailyJobsDto;
+
             List<DailyJobEmployeeBuilder> employeeBuilder = new List<DailyJobEmployeeBuilder>();
             List<Guid> employeeIds = new List<Guid>();
             List<Employee> employees = new List<Employee>();
 
+            // Builder for the employee string and ids for front-end jobs table
             foreach (var job in jobs)
             {
                 var jobBuilder = new DailyJobEmployeeBuilder.Builder();
@@ -75,6 +81,7 @@ namespace GLFManager.App.Services.JobServices
 
             }
 
+            // Combine the job entity with the employee builder to return a list of dailyJobsDto
             dailyJobsDto = jobs.Join(employeeBuilder, 
                                     job => job.Id, 
                                     empBldr => empBldr.Id, 

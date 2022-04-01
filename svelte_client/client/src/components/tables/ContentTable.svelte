@@ -163,154 +163,179 @@ import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 
 </script>
 
-{ #if dataDisplayed.length > 0 }
+<div class="contentTableContainer">
+    { #if dataDisplayed.length > 0 }
 
-<!-- Search Input -->
-<div class="input-group mb-3" id="searchDiv">
-    <input 
-        type="search" bind:value={searchInput} 
-        class="form-control" id="inputGroup-sizing-default"
-    >
-    <span 
-        class="input-group-text searchBtn"
-        on:click={search}
-    >
-        Search
-    </span>
-</div>
-
-<table class="table table-striped table-hover">
-    <!-- Main Table Column Headings -->
-    <thead>
-        <tr>
-            <!-- Sort Column -->
-            { #each tableSettings as setting, i }
-                <th 
-                    class="tableColumnName"
-                    on:click={()=>sortColumn(i, setting)}
-                >
-                    { setting.heading }
-                    { #if setting.sort }
-                        <button
-                            class="icon"
-                        >
-                            { #if (setting.isSorted) }
-                                <IoIosArrowDown />
-                            { :else if (setting.isSorted === false) }
-                                <IoIosArrowUp />
-                            { /if }
-
-                        </button>
-                    { /if }
-                </th>
-            { /each} 
-        </tr>
-    </thead>
-
-    <!-- Main Table Data -->
-    <tbody>
-        { #each dataDisplayed as data }
-            <tr>
-                { #each tableSettings as setting }
-                    <td>{ data[setting.dataKey] }</td>
-                { /each }
-            </tr>
-        { /each }
-    </tbody>
-
-</table>
-
-
-<!-- Pagination  -->
-<div class="pageSelection d-flex justify-content-between">
-
-    <!-- Number of data to display -->
-    <div class="displayDataNumber">
-        <select
-            class = "form-select form-select-md"
-            bind:value={numberOfDataDisplayed} 
-            on:change={()=>setDisplayNumber(numberOfDataDisplayed)}
-        >
-            <option value = { numberOfDataDisplayed }> Display </option>
-            <option value = 1> 1 </option>
-            <option value = 2> 2 </option>
-            <option value = 3> 3 </option>
-        </select>
-    </div>
-
-    <ul class="pagination">
-
-        <!-- Jump to first page button -->
-        <li 
-            class = {
-                pageSelected === 1 ? 'page-item disabled' : 'page-item'
-            }
-            on:click={() => pagination(1)}
-        >
-            <span class = "page-link">
-                &laquo; First
-            </span>
-        </li>
-
-        <!-- Previous Button -->
-        <li 
-            class = {
-                pageSelected === 1 ? 'page-item disabled' : 'page-item'
-            }
-            on:click={()=>pagination(pageSelected - 1)}
-        >
-            <span class = "page-link">
-                Previous
-                <!-- &#8592; -->
-            </span>
-        </li>
-
-        <!-- Page Numbers -->
-        { #each Array(pages) as _, i }
-            <li 
-                class = {
-                    pageSelected === i+1 ? 'page-item active' : 'page-item'
-                }
-                on:click={ ()=>pagination(i+1) }
+        <!-- Search Input -->
+        <div class="input-group mb-3" id="searchDiv">
+            <input 
+                type="search" bind:value={searchInput} 
+                class="form-control" id="inputGroup-sizing-default"
             >
-                <span class="page-link">{ i+1 }</span>
-            </li>
-        { /each }
-
-        <!-- Next Button -->
-        <li 
-            class = {
-                pageSelected === pages ? 'page-item disabled' : 'page-item'
-            }
-            on:click={ ()=>pagination(pageSelected + 1) }
-        >
-            <span class = "page-link">
-                Next 
-                <!-- &#8594; -->
+            <span 
+                class="input-group-text searchBtn"
+                on:click={search}
+            >
+                Search
             </span>
-        </li>
+        </div>
 
-        <!-- Jump to last page button -->
-        <li 
-            class = {
-                pageSelected === pages ? 'page-item disabled' : 'page-item'
-            }
-            on:click={() => pagination(pages)}
-        >
-            <span class = "page-link pageJump">
-               Last &raquo;
-            </span>
-        </li>
+        <table class="table table-striped table-hover">
+            <!-- Main Table Column Headings -->
+            <thead>
+                <tr>
+                    <!-- Sort Column -->
+                    { #each tableSettings as setting, i }
+                        <th 
+                            class="tableColumnName"
+                            on:click={()=>sortColumn(i, setting)}
+                        >
+                            { setting.heading }
+                            { #if setting.sort }
+                                <button
+                                    class="icon"
+                                >
+                                    { #if (setting.isSorted) }
+                                        <IoIosArrowDown />
+                                    { :else if (setting.isSorted === false) }
+                                        <IoIosArrowUp />
+                                    { /if }
 
-    </ul>
-    <div><!-- Empty div to center <ul class="pagination"> --></div>
+                                </button>
+                            { /if }
+                        </th>
+                    { /each} 
+                </tr>
+            </thead>
+
+            <!-- Main Table Data -->
+            <tbody>
+                { #each dataDisplayed as data }
+                    <tr>
+                        { #each tableSettings as setting }
+                            <td>{ data[setting.dataKey] }</td>
+                        { /each }
+                    </tr>
+                { /each }
+            </tbody>
+
+        </table>
+
+
+        <!-- Pagination  -->
+        <div class="pageSelection d-flex justify-content-between">
+
+            <!-- Number of data to display -->
+            <div class="displayDataNumber">
+                <select
+                    class = "form-select form-select-md"
+                    bind:value={numberOfDataDisplayed} 
+                    on:change={()=>setDisplayNumber(numberOfDataDisplayed)}
+                >
+                    <option value = { numberOfDataDisplayed }> Display </option>
+                    <option value = 1> 1 </option>
+                    <option value = 2> 2 </option>
+                    <option value = 3> 3 </option>
+                </select>
+            </div>
+
+            <ul class="pagination">
+
+                <!-- Jump to first page button -->
+                <li 
+                    class = {
+                        pageSelected === 1 ? 'page-item disabled' : 'page-item'
+                    }
+                    on:click={() => pagination(1)}
+                >
+                    <span class = "page-link">
+                        &laquo; First
+                    </span>
+                </li>
+
+                <!-- Previous Button -->
+                <li 
+                    class = {
+                        pageSelected === 1 ? 'page-item disabled' : 'page-item'
+                    }
+                    on:click={()=>pagination(pageSelected - 1)}
+                >
+                    <span class = "page-link">
+                        Previous
+                        <!-- &#8592; -->
+                    </span>
+                </li>
+
+                <!-- Page Numbers -->
+                { #each Array(pages) as _, i }
+                    <li 
+                        class = {
+                            pageSelected === i+1 ? 'page-item active' : 'page-item'
+                        }
+                        on:click={ ()=>pagination(i+1) }
+                    >
+                        <span class="page-link">{ i+1 }</span>
+                    </li>
+                { /each }
+
+                <!-- Next Button -->
+                <li 
+                    class = {
+                        pageSelected === pages ? 'page-item disabled' : 'page-item'
+                    }
+                    on:click={ ()=>pagination(pageSelected + 1) }
+                >
+                    <span class = "page-link">
+                        Next 
+                        <!-- &#8594; -->
+                    </span>
+                </li>
+
+                <!-- Jump to last page button -->
+                <li 
+                    class = {
+                        pageSelected === pages ? 'page-item disabled' : 'page-item'
+                    }
+                    on:click={() => pagination(pages)}
+                >
+                    <span class = "page-link pageJump">
+                    Last &raquo;
+                    </span>
+                </li>
+
+            </ul>
+            <div><!-- Empty div to center <ul class="pagination"> --></div>
+        </div>
+
+    { :else }
+        <!-- When no data is found -->
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="tableColumnName">
+                        Results
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>No Data Found</td>
+                </tr>
+            </tbody>
+        </table>
+    { /if }
+
 </div>
-
-{ :else }
-<p>nothing to display</p>
-{ /if }
 
 <style>
+    .contentTableContainer {
+        position: absolute;
+        box-sizing: border-box;
+        min-width: calc(100vw - 340px);
+        padding: 5px;
+        top: 40%;
+        transform: translateY(-60%);
+    }
     .tableColumnName {
         cursor: pointer;
     }

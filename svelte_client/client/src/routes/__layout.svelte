@@ -43,4 +43,8 @@ signedIn.subscribe(value => isSignedIn = value);
     .container-fluid {
         width: 98vw;
     }
+
+    .content {
+        position: relative;
+    }
 </style>
