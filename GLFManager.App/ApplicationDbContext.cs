@@ -16,7 +16,7 @@ namespace GLFManager.App
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<JobsEmployee> JobsEmployees { get; set; }
-
+        public DbSet<Positions> Positions { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -36,6 +36,8 @@ namespace GLFManager.App
                 .HasIndex(company => new { company.Name })
                 .IsUnique(true);
 
+            //builder.Entity<Employee>()
+            //    .HasMany(p => p.)
             //builder.Entity<JobsEmployee>()
             //    .HasKey(je => new { je.JobsId, je.EmployeeId });
             //builder.Entity<JobsEmployee>()

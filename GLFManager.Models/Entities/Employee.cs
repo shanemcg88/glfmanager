@@ -20,7 +20,7 @@ namespace GLFManager.Models.Entities
             Province = src.Province;
             Country = src.Country;
             PostalCode = src.Country;
-            Skills = src.Skills;
+            Positions = new List<Positions>();
             JobsEmployees = new List<JobsEmployee>();
         }
 
@@ -35,6 +35,7 @@ namespace GLFManager.Models.Entities
         public string PostalCode { get; set; }
         public List<string> Skills { get; set; }
 
+        public virtual ICollection<Positions> Positions { get; set; }
         //public ICollection<Jobs> Jobs { get; set; }
         //public ICollection<JobsEmployee> JobsEmployees { get; set; }
         public virtual ICollection<JobsEmployee> JobsEmployees { get; set; }
